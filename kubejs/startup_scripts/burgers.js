@@ -157,6 +157,8 @@ function getTooltipFromId(id) {
     let prefix_id = INVERSE_PREFIX_DICT[prefix]
     /** @type {Text[]} */
     let tooltip = []
+    // Pop the patty from the id
+    id_parts.pop()
     // If burger has sauce add sauce to the tooltip
     if (prefix_id > 5) {
         tooltip.push(Text.gray("Sauce: ").append(Text.translatable(`kubejs.burger.sauce.${id_parts.pop()}`).gray()))
