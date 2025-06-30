@@ -6,6 +6,4 @@ global.disabledItems = []
 
 global.items = {}
 
-global.tags = {}
-
 global.lang = {}

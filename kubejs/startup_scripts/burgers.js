@@ -1,5 +1,5 @@
 // Load Helpers
-let { stringHelper, queueModel, queueRecipe } = global
+let { stringHelper, queueModel, queueRecipe, queueTag } = global
 
 const PATTIES = {
     "beef": {
@@ -78,13 +78,6 @@ const SAUCES = {
             "en_us": "Burger Relish",
         },
     },
-}
-
-function addTagToItem(tag, item) {
-    if (!Object.keys(global.tags).includes(tag)) {
-        global.tags[tag] = []
-    }
-    global.tags[tag].push(item)
 }
 
 function addLang(language, namespace, key, translation) {
@@ -408,7 +401,7 @@ function addBurger(ingredients) {
         getTooltipFromId(default_id)
     )
     addRecipesForBurger(default_id, ingredients)
-    addTagToItem("create:upright_on_belt", default_id)
+    queueTag.addTagToItem("create:upright_on_belt", default_id)
 }
 
 /**
