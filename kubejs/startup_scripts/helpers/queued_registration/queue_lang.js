@@ -54,7 +54,7 @@ global.queueLang.renameEnglish = (type, lang, id) => {
     global.queueLang.add(type, "en_us", id, lang["en_us"])
 }
 
-// Intialise rename with english dialects
+// Initialise rename with english dialects
 global.english_dialects.forEach(dialect => {
     global.lang[dialect] = []
     Object.keys(global.rename).forEach(type => {
