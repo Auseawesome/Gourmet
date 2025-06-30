@@ -78,6 +78,22 @@ const SAUCES = {
             "en_us": "Burger Relish",
         },
     },
+    "mustard": {
+        "id": "kubejs:mustard",
+        "container": "kubejs:mustard_bottle",
+        "height": 0,
+        "lang": {
+            "en_us": "Mustard",
+        }
+    },
+    "mayonnaise": {
+        "id": "kubejs:mayonnaise",
+        "container": "kubejs:mayonnaise_bottle",
+        "height": 0,
+        "lang": {
+            "en_us": "Mayonnaise"
+        }
+    }
 }
 
 const PREFIX_DICT = {
