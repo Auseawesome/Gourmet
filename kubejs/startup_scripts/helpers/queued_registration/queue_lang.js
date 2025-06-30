@@ -1,12 +1,14 @@
 // priority: 100
 
+global.english_dialects = ["en_au","en_ca","en_gb","en_nz"]
+
 global.queueLang = {}
 global.lang = {}
 global.rename = {
-    "items": {},
-    "blocks": {},
-    "biomes": {},
-    "entities": {},
+    "item": {},
+    "block": {},
+    "biome": {},
+    "entity": {},
 }
 
 global.queueLang.add = (language, namespace, key, translation) => {
@@ -51,3 +53,15 @@ global.queueLang.renameEnglish = (type, lang, id) => {
     })
     global.queueLang.add(type, "en_us", id, lang["en_us"])
 }
+
+// Intialise rename with english dialects
+global.english_dialects.forEach(dialect => {
+    global.lang[dialect] = []
+    Object.keys(global.rename).forEach(type => {
+        global.rename[type][dialect] = []
+    })
+})
+global.lang.en_us = []
+Object.keys(global.rename).forEach(type => {
+    global.rename[type].en_us = []
+})

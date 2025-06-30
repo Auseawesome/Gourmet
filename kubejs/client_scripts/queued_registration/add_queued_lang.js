@@ -4,16 +4,16 @@ global.english_dialects.forEach(dialect => {
         global.lang[dialect].forEach(lang => {
             event.add(lang.namespace, lang.key, lang.translation)
         })
-        global.rename.items[dialect].forEach(lang => {
+        global.rename.item[dialect].forEach(lang => {
             event.renameItem(lang.id, lang.translation)
         })
-        global.rename.blocks[dialect].forEach(lang => {
+        global.rename.block[dialect].forEach(lang => {
             event.renameBlock(lang.id, lang.translation)
         })
-        global.rename.entities[dialect].forEach(lang => {
+        global.rename.entity[dialect].forEach(lang => {
             event.renameEntity(lang.id, lang.translation)
         })
-        global.rename.biomes[dialect].forEach(lang => {
+        global.rename.biome[dialect].forEach(lang => {
             event.renameBiome(lang.id, lang.translation)
         })
     })
@@ -24,16 +24,16 @@ ClientEvents.lang("en_us", event => {
     global.lang.en_us.forEach(lang => {
         event.add(lang.namespace, lang.key, lang.translation)
     })
-    global.rename.items.en_us.forEach(lang => {
+    global.rename.item.en_us.forEach(lang => {
         event.renameItem(lang.id, lang.translation)
     })
-    global.rename.blocks.en_us.forEach(lang => {
+    global.rename.block.en_us.forEach(lang => {
         event.renameBlock(lang.id, lang.translation)
     })
-    global.rename.entities.en_us.forEach(lang => {
+    global.rename.entity.en_us.forEach(lang => {
         event.renameEntity(lang.id, lang.translation)
     })
-    global.rename.biomes.en_us.forEach(lang => {
+    global.rename.biome.en_us.forEach(lang => {
         event.renameBiome(lang.id, lang.translation)
     })
 })
