@@ -1,7 +1,7 @@
 // priority: 100
 
 // Load Helpers
-let { stringHelper } = global
+let { recipeHelper, stringHelper } = global
 
 // Define Helper
 
@@ -65,6 +65,15 @@ global.queueRecipe.preparation = (recipe) => {
     global.recipes.preparation.push(recipe)
 }
 
+global.recipes.juicing = []
+
+global.queueRecipe.juicing = (recipe) => {
+    if (!Object.keys(recipe).includes("id")) {
+        recipe.id = `juicing_${stringHelper.removeNamespace(recipe.primary)}_with_${stringHelper.removeNamespace(recipe.secondary)}_into_${stringHelper.removeNamespace(recipe.container)}`
+    }
+    global.recipes.juicing.push(recipe)
+}
+
 global.recipes.compacting = []
 
 // Doesn't appear to properly support fluids
@@ -114,5 +123,25 @@ global.queueRecipe.fluidAssembly = (recipe) => {
         "tool": recipe.container,
         "output": recipe.output,
         "id": recipe.id,
+    })
+}
+
+global.queueRecipe.automatableJuicing = (recipe) => {
+    global.queueRecipe.juicing({
+        "primary": recipe.primary,
+        "secondary": recipe.secondary,
+        "container": recipe.container,
+        "output": recipe.output,
+        "id": stringHelper.getNamespace(recipe.id) + ":juicing_" + stringHelper.removeNamespace(recipe.id)
+    })
+    global.queueRecipe.custom({
+        "type": "create:compacting",
+        "ingredients": recipeHelper.itemOrTagArray([recipe.primary, recipe.secondary]),
+        "results": [
+            {
+                "amount": 250,
+                "id": recipe.outputFluid
+            }
+        ]
     })
 }

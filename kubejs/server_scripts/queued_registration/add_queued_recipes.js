@@ -1,7 +1,7 @@
 //priority: 1
 
 // Load Helpers
-let { configHelper } = global;
+let { recipeHelper, configHelper } = global;
 
 let recipeLogging = configHelper.getValue("recipeLogging")
 
@@ -78,6 +78,31 @@ ServerEvents.recipes(event => {
         if (recipeLogging) {
             console.log(`Recipe Added`)
         }
+    })
+    global.recipes.juicing.forEach(recipe => {
+        if (recipeLogging) {
+            console.log(`Adding juicing recipe: ${recipe.id}`)
+        }
+
+        event.custom({
+            "type": "expandeddelight:juicing",
+            "container": {
+                "count": 1,
+                "id": recipe.container
+            },
+            "experience": 0.0,
+            "ingredients": [
+                recipeHelper.itemOrTag(recipe.primary),
+                recipeHelper.itemOrTag(recipe.secondary)
+            ],
+            "result": {
+                "count": 1,
+                "id": recipe.output
+            }
+        }).id(recipe.id)
+
+        if (recipeLogging) {
+            console.log(`Recipe Added`)
         }
     })
     event.recipes.create.finalize()
