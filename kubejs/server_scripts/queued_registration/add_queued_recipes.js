@@ -7,6 +7,15 @@ let recipeLogging = configHelper.getValue("recipeLogging")
 
 ServerEvents.recipes(event => {
     addCreateRecipeHandler(event)
+    global.recipes.custom.forEach(recipe => {
+        if (recipeLogging) {
+            console.log(`Adding custom recipe of type: ${recipe.type}`)
+        }
+        event.custom(recipe)
+        if (recipeLogging) {
+            console.log(`Recipe Added`)
+        }
+    })
     global.recipes.deploying.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding deploying recipe: ${recipe.id}`)

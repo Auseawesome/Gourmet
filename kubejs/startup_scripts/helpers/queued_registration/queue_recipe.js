@@ -65,6 +65,12 @@ global.queueRecipe.preparation = (recipe) => {
     global.recipes.preparation.push(recipe)
 }
 
+global.recipes.custom = []
+
+global.queueRecipe.custom = (recipe) => {
+    global.recipes.custom.push(recipe)
+}
+
 // Recipe Helpers
 
 global.queueRecipe.assembly = (recipe) => {
