@@ -1,5 +1,5 @@
 // Load Helpers
-let { stringHelper, queueLang, queueModel, queueRecipe, queueTag } = global
+let { stringHelper, queueItem, queueLang, queueModel, queueRecipe, queueTag, queueTooltip } = global
 
 const PATTIES = {
     "beef": {
@@ -80,19 +80,6 @@ const SAUCES = {
     },
 }
 
-/**
- * Queue item to be added
- * @param {String} id
- * @param {import("com.google.gson.JsonElement").$JsonElement$$Type} model
- * @param {Text[]} tooltip
-*/
-function addItem(id, model, tooltip) {
-    if (tooltip.length < 1) {
-        tooltip.push([Text.white(stringHelper.removeNamespace(id).split("_").map(stringHelper.capitalize).join(" "))])
-    }
-    global.items[id] = {model: model, tooltip: tooltip}
-}
-
 const PREFIX_DICT = {
     0: "open",
     1: "closed",
@@ -169,9 +156,7 @@ function getTooltipFromId(id) {
     /** @type {Number} */
     let prefix_id = INVERSE_PREFIX_DICT[prefix]
     /** @type {Text[]} */
-    let tooltip = [
-        [Text.white(`${stringHelper.capitalize(prefix)} `).append(Text.translatable(`kubejs.burger.patty.${id_parts.pop()}`).append(Text.gray(` Burger`)))]
-    ]
+    let tooltip = []
     // If burger has sauce add sauce to the tooltip
     if (prefix_id > 5) {
         tooltip.push(Text.gray("Sauce: ").append(Text.translatable(`kubejs.burger.sauce.${id_parts.pop()}`).gray()))
@@ -372,13 +357,13 @@ function addRecipesForBurger(id, ingredients) {
  */
 function addBurger(ingredients) {
     let default_id = getIdFromIngredients(ingredients)
-    console.log(`Adding Burger ${default_id}`)
-    addItem(
-        default_id,
-        getModelFromId(default_id),
-        getTooltipFromId(default_id)
-    )
+
+    queueItem.basic(default_id)
+    queueModel.basic(default_id, getModelFromId(default_id))
+    queueTooltip.basic(default_id, getTooltipFromId(default_id))
+
     addRecipesForBurger(default_id, ingredients)
+
     queueTag.addTagToItem("create:upright_on_belt", default_id)
 }
 
@@ -393,13 +378,14 @@ function addBurgers(ingredients) {
     addBurger(ingredients)
 }
 
-// Register buns
-addItem("kubejs:bun",{parent: "minecraft:item/generated",textures:{layer0:"kubejs:item/burger/bun"}},[])
-addItem("kubejs:bun_base",{parent: "minecraft:item/generated",textures:{layer0:"kubejs:item/burger/bun_base"}},[])
-addItem("kubejs:bun_top",{parent: "minecraft:item/generated",textures:{layer0:"kubejs:item/burger/bun_top"}},[])
+// Register bun parts
+queueItem.basic("kubejs:bun_base")
+queueItem.basic("kubejs:bun_top")
+queueModel.basic("kubejs:bun_base",{parent: "minecraft:item/generated",textures:{layer0:"kubejs:item/burger/bun_base"}})
+queueModel.basic("kubejs:bun_top",{parent: "minecraft:item/generated",textures:{layer0:"kubejs:item/burger/bun_top"}})
 
-addItem("kubejs:chicken_patty",{},[])
-addItem("kubejs:vegetable_patty",{},[])
+queueItem.basic("kubejs:chicken_patty")
+queueItem.basic("kubejs:vegetable_patty")
 
 // Generate all burgers
 Object.keys(PATTIES).forEach(patty => {

@@ -8,6 +8,6 @@ global.models = {}
  * @param {String} id
  * @param {import("com.google.gson.JsonElement").$JsonElement$$Type} model
 */
-global.queueModel.addModel = (id, model) => {
+global.queueModel.basic = (id, model) => {
     global.models[id] = model
 }

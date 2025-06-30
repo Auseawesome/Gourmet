@@ -3,7 +3,10 @@
 // Register items in the global.items object
 StartupEvents.registry("item", event => {
     Object.keys(global.items).forEach(id => {
-        //TODO: Fix tooltip
-        event.create(id).displayName(global.items[id].tooltip[0])
+        let item = global.items[id]
+        let item_builder = event.create(id)
+        if (Object.keys(item).includes("displayName")) {
+            item_builder.displayName(item.displayName)
+        }
     })
 })

@@ -30,9 +30,4 @@ ClientEvents.generateAssets('after_mods', event => {
     Object.keys(global.models).forEach(id => {
         event.json(`${getNamespace(id)}:models/item/${removeNamespace(id)}`,global.models[id])
     })
-    Object.keys(global.items).forEach(id => {
-        if (!isEmpty(global.items[id].model)) {
-            event.json(`${getNamespace(id)}:models/item/${removeNamespace(id)}`,global.items[id].model)
-        }
-    })
 })
