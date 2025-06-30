@@ -2,6 +2,12 @@
 
 global.queueLang = {}
 global.lang = {}
+global.rename = {
+    "items": {},
+    "blocks": {},
+    "biomes": {},
+    "entities": {},
+}
 
 global.queueLang.add = (language, namespace, key, translation) => {
     if (!Object.keys(global.lang).includes(language)) {
@@ -23,4 +29,25 @@ global.queueLang.english = (lang, namespace, key) => {
         }
     })
     global.queueLang.add("en_us", namespace, key, lang["en_us"])
+}
+
+global.queueLang.rename = (type, language, id, translation) => {
+    if (!Object.keys(global.rename[type]).includes(language)) {
+        global.rename[type][language] = []
+    }
+    global.rename[type][language].push({
+        "id": id,
+        "translation": translation,
+    })
+}
+
+global.queueLang.renameEnglish = (type, lang, id) => {
+    global.english_dialects.forEach(dialect => {
+        if (!Object.keys(lang).includes(dialect)) {
+            global.queueLang.rename(type, dialect, id, lang["en_us"])
+        } else {
+            global.queueLang.rename(type, dialect, id, lang[dialect])
+        }
+    })
+    global.queueLang.add(type, "en_us", id, lang["en_us"])
 }
