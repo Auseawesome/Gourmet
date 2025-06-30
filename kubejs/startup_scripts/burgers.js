@@ -1,5 +1,5 @@
 // Load Helpers
-let { stringHelper, queueItem, queueLang, queueModel, queueRecipe, queueTag, queueTooltip } = global
+let { configHelper, stringHelper, queueItem, queueLang, queueModel, queueRecipe, queueTag, queueTooltip } = global
 
 const PATTIES = {
     "beef": {
@@ -146,7 +146,9 @@ function getIdFromIngredients(ingredients) {
  * @returns {Text[]}
  */
 function getTooltipFromId(id) {
-    console.log(`Adding tooltip for ${id}`)
+    if (configHelper.getValue("tooltipLogging")) {
+        console.log(`Adding tooltip for ${id}`)
+    }
     /** @type {String[]} */
     let id_parts = id.split("_").reverse()
     // Remove 'kubejs:burger'
@@ -168,6 +170,19 @@ function getTooltipFromId(id) {
         tooltip.push(Text.translatable(`kubejs.burger.filling.${id_parts.pop()}`).gray())
     }
     return tooltip
+}
+
+/**
+ * Returns name from id string
+ * @param {String} id 
+ * @returns {Text}
+ */
+function getNameFromId(id) {
+     /** @type {String[]} */
+    let id_parts = id.split("_").reverse()
+    // Remove 'kubejs:burger'
+    id_parts.pop()
+    return Text.gray(`${stringHelper.capitalize(id_parts.pop())} ${PATTIES[id_parts.pop()].lang.en_us} Burger`)
 }
 
 /**
@@ -360,7 +375,7 @@ function addRecipesForBurger(id, ingredients) {
 function addBurger(ingredients) {
     let default_id = getIdFromIngredients(ingredients)
 
-    queueItem.basic(default_id)
+    queueItem.customName(default_id, getNameFromId(default_id))
     queueModel.basic(default_id, getModelFromId(default_id))
     queueTooltip.basic(default_id, getTooltipFromId(default_id))
 

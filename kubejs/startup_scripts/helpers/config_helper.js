@@ -5,7 +5,8 @@ global.configHelper = {}
 global.config = JsonIO.read("kubejs/config/pack.json")
 
 global.defaultConfig = {
-    "recipeLogging": false
+    "recipeLogging": false,
+    "tooltipLogging": false,
 }
 
 global.configHelper.writeConfig = () => {

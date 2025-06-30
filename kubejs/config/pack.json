@@ -1,3 +1,4 @@
 {
-	"recipeLogging": true
+	"recipeLogging": false,
+	"tooltipLogging": false
 }
