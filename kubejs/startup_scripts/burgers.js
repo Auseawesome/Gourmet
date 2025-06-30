@@ -1,5 +1,5 @@
 // Load Helpers
-let { stringHelper, queueModel, queueRecipe, queueTag } = global
+let { stringHelper, queueLang, queueModel, queueRecipe, queueTag } = global
 
 const PATTIES = {
     "beef": {
@@ -78,28 +78,6 @@ const SAUCES = {
             "en_us": "Burger Relish",
         },
     },
-}
-
-function addLang(language, namespace, key, translation) {
-    if (!Object.keys(global.lang).includes(language)) {
-        global.lang[language] = []
-    }
-    global.lang[language].push({
-        "namespace": namespace,
-        "key": key,
-        "translation": translation
-    })
-}
-
-function addEnglishLang(lang, namespace, key) {
-    global.english_dialects.forEach(dialect => {
-        if (!Object.keys(lang).includes(dialect)) {
-            addLang(dialect, namespace, key, lang["en_us"])
-        } else {
-            addLang(dialect, namespace, key, lang[dialect])
-        }
-    })
-    addLang("en_us", namespace, key, lang["en_us"])
 }
 
 /**
@@ -457,13 +435,13 @@ Object.keys(PATTIES).forEach(patty => {
 // Register lang for ingredients
 Object.keys(PATTIES).forEach(patty => {
     let {lang} = PATTIES[patty]
-    addEnglishLang(lang, "kubejs", `kubejs.burger.patty.${patty}`)
+    queueLang.english(lang, "kubejs", `kubejs.burger.patty.${patty}`)
 })
 Object.keys(SAUCES).forEach(sauce => {
     let {lang} = SAUCES[sauce]
-    addEnglishLang(lang, "kubejs", `kubejs.burger.sauce.${sauce}`)
+    queueLang.english(lang, "kubejs", `kubejs.burger.sauce.${sauce}`)
 })
 Object.keys(FILLINGS).forEach(filling => {
     let {lang} = FILLINGS[filling]
-    addEnglishLang(lang, "kubejs", `kubejs.burger.filling.${filling}`)
+    queueLang.english(lang, "kubejs", `kubejs.burger.filling.${filling}`)
 })
