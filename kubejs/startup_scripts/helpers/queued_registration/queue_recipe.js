@@ -68,18 +68,35 @@ global.queueRecipe.preparation = (recipe) => {
 // Recipe Helpers
 
 global.queueRecipe.assembly = (recipe) => {
-    let id = recipe.id
-    recipe.id = stringHelper.getNamespace(id) + ":deploying_" + stringHelper.removeNamespace(id)
-    global.queueRecipe.deploying(recipe)
-    recipe.id = stringHelper.getNamespace(id) + ":preparation_" + stringHelper.removeNamespace(id)
-    global.queueRecipe.preparation(recipe)
+    global.queueRecipe.deploying({
+        "input": recipe.input,
+        "tool": recipe.tool,
+        "output": recipe.output,
+        "id": stringHelper.getNamespace(recipe.id) + ":deploying_" + stringHelper.removeNamespace(recipe.id),
+    })
+    global.queueRecipe.preparation({
+        "input": recipe.input,
+        "tool": recipe.tool,
+        "output": recipe.output,
+        "id": stringHelper.getNamespace(recipe.id) + ":preparation_" + stringHelper.removeNamespace(recipe.id),
+    })
 }
 
 global.queueRecipe.fluidAssembly = (recipe) => {
-    let id = recipe.id
-    recipe.id = stringHelper.getNamespace(id) + ":filling_" + stringHelper.removeNamespace(id)
-    global.queueRecipe.filling(recipe)
-    recipe.id = id
-    recipe.tool = recipe.container
-    global.queueRecipe.assembly(recipe)
+    let fillingRecipe = {
+        "input": recipe.input,
+        "fluid": recipe.fluid,
+        "output": recipe.output,
+        "id": stringHelper.getNamespace(recipe.id) + ":filling_" + stringHelper.removeNamespace(recipe.id)
+    }
+    if (Object.keys(recipe).includes("amount")) {
+        fillingRecipe.amount = recipe.amount
+    }
+    global.queueRecipe.filling(fillingRecipe)
+    global.queueRecipe.assembly({
+        "input": recipe.input,
+        "tool": recipe.container,
+        "output": recipe.output,
+        "id": recipe.id,
+    })
 }
