@@ -43,6 +43,15 @@ ServerEvents.recipes(event => {
             console.log(`Recipe Added`)
         }
     })
+    global.recipes.compacting.forEach(recipe => {
+        if (recipeLogging) {
+            console.log(`Adding compacting recipe: ${recipe.id}`)
+        }
+        event.recipes.create.compacting(recipe.output, recipe.inputs).id(recipe.id)
+        if (recipeLogging) {
+            console.log(`Recipe Added`)
+        }
+    })
     global.recipes.preparation.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding preparation recipe: ${recipe.id}`)

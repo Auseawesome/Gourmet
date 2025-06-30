@@ -65,6 +65,16 @@ global.queueRecipe.preparation = (recipe) => {
     global.recipes.preparation.push(recipe)
 }
 
+global.recipes.compacting = []
+
+// Doesn't appear to properly support fluids
+global.queueRecipe.compacting = (recipe) => {
+    if (!Object.keys(recipe).includes("id")) {
+        recipe.id = `compacting_${stringHelper.removeNamespace(recipe.output)}_from_${recipe.inputs[0].toString.split(" ")[0]}`
+    }
+    global.recipes.compacting.push(recipe)
+}
+
 global.recipes.custom = []
 
 global.queueRecipe.custom = (recipe) => {
