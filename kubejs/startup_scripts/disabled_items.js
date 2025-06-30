@@ -20,7 +20,10 @@ disable("farmersdelight:hamburger")
 
 // Replaced Food Categories
 disableFoodCategory("sandwich")
-disableFoodCategory("juice")
+
+// Disable juice without disabling juicer
+disable(`/^farmersdelight:[a-z_]*juice[a-z_]*$/`)
+disable(`/^expandeddelight:[a-z_]*juice[a-z_]*(?<!juicer)$/`)
 
 // Sweet Berries
 disableFoodCategory("sweet_berry")
