@@ -26,15 +26,6 @@ ServerEvents.recipes(event => {
         }
     })
     global.recipes.preparation.forEach(recipe => {
-        let tool_object = {}
-        if (recipe.tool.startsWith("#")) {
-            tool_object = {
-                "tag": recipe.tool.slice(1, recipe.tool.length)
-            }
-        } else {
-            tool_object = {
-                "item": recipe.tool
-            }
         }
         event.custom({
             "type": "farmersdelight:cutting",
@@ -51,7 +42,7 @@ ServerEvents.recipes(event => {
                     }
                 }
             ],
-            "tool": tool_object,
+            "tool": recipeHelper.itemOrTag(recipe.tool),
         }).id(recipe.id)
 
         if (recipeLogging) {
