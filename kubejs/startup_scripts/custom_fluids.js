@@ -1,0 +1,10 @@
+StartupEvents.registry("fluid", event => {
+    event.create("kubejs:ketchup", "thick")
+    .tint(0xFF0000)
+    .noBucket()
+    .noBlock()
+    event.create("kubejs:burger_relish", "thick")
+    .tint(0xAA5500)
+    .noBucket()
+    .noBlock()
+})

@@ -1,0 +1,19 @@
+
+# General
+.vscode
+downloads/
+
+# Minecraft Specific
+crash-reports/
+logs/
+saves/
+mods/*.jar
+usercache.json
+usernamecache.json
+command_history.txt
+hs_err_pid*.log
+
+# KubeJS Specfic
+local/
+.probe
+kubejs/config/probe-settings.json

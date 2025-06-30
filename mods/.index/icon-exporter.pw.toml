@@ -1,0 +1,16 @@
+filename = 'iconexporter-1.21.1-neoforge-1.3.1-134.jar'
+name = 'Icon Exporter'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge' ]
+x-prismlauncher-mc-versions = [ '1.21.1' ]
+x-prismlauncher-release-type = 'beta'
+
+[download]
+hash = 'b507cce51ce90e7422d096c68ecc30def222cd024ac4abd3e34794f91e4919c95945f00d643a4f4d979d1484e7d15e0041b0097af14a8bffbe7d17a80b19785d'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/8KCmS7Bd/versions/bztfjxmO/iconexporter-1.21.1-neoforge-1.3.1-134.jar'
+
+[update.modrinth]
+mod-id = '8KCmS7Bd'
+version = 'bztfjxmO'
