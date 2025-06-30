@@ -25,13 +25,6 @@ const PATTIES = {
     },
 }
 const FILLINGS = {
-    "mushroom": {
-        "id": "minecraft:brown_mushroom",
-        "height": 1,
-        "lang": {
-            "en_us": "Mushroom",
-        }
-    },
     "onion": {
         "id": "#c:foods/onion",
         "height": 1,
@@ -45,6 +38,13 @@ const FILLINGS = {
         "lang": {
             "en_us": "Tomato",
         },
+    },
+    "mushroom": {
+        "id": "minecraft:brown_mushroom",
+        "height": 1,
+        "lang": {
+            "en_us": "Mushroom",
+        }
     },
     "cabbage": {
         "id": "#c:foods/cabbage",
