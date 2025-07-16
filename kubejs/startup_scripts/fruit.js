@@ -61,11 +61,19 @@ Object.keys(FRUIT).forEach(fruit => {
     // Add recipe for simmering jelly from juice, fruit and extra sugar
     queueRecipe.bottleFluid(`kubejs:${fruit}_jelly`,`kubejs:${fruit}_jelly_bottle`)
 
-    queueLang.renameEnglish("item", {
+    queueLang.renameEnglish("fluid", {
         "en_us": `${langHelper.dialectOrUS(lang, "en_us")} Jelly`,
         "en_au": `${langHelper.dialectOrUS(lang, "en_au")} Jam`,
         "en_ca": `${langHelper.dialectOrUS(lang, "en_ca")} Jelly`,
         "en_gb": `${langHelper.dialectOrUS(lang, "en_gb")} Jam`,
         "en_nz": `${langHelper.dialectOrUS(lang, "en_nz")} Jam`,
+    },`kubejs:${fruit}_jelly`)
+
+    queueLang.renameEnglish("item", {
+        "en_us": `${langHelper.dialectOrUS(lang, "en_us")} Jelly Bottle`,
+        "en_au": `${langHelper.dialectOrUS(lang, "en_au")} Jam Bottle`,
+        "en_ca": `${langHelper.dialectOrUS(lang, "en_ca")} Jelly Bottle`,
+        "en_gb": `${langHelper.dialectOrUS(lang, "en_gb")} Jam Bottle`,
+        "en_nz": `${langHelper.dialectOrUS(lang, "en_nz")} Jam Bottle`,
     },`kubejs:${fruit}_jelly_bottle`)
 })
