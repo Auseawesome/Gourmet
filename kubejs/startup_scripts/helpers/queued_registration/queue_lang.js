@@ -9,6 +9,7 @@ global.rename = {
     "block": {},
     "biome": {},
     "entity": {},
+    "fluid": {},
 }
 
 global.queueLang.add = (language, namespace, key, translation) => {
