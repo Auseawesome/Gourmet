@@ -18,3 +18,7 @@ local/
 .probe
 kubejs/config/probe-settings.json
 kubejs/README.txt
+options.txt
+config/flywheel-client.toml
+icon.png
+config/iris.properties
