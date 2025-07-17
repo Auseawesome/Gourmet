@@ -126,6 +126,8 @@ global.queueRecipe.custom = (recipe, id) => {
 
 // Recipe Helpers
 
+global.special_recipes.assembly = {}
+
 global.queueRecipe.assembly = (recipe) => {
     global.queueRecipe.deploying({
         "input": recipe.input,
@@ -139,6 +141,11 @@ global.queueRecipe.assembly = (recipe) => {
         "output": recipe.output,
         "id": stringHelper.getNamespace(recipe.id) + ":preparation_" + stringHelper.removeNamespace(recipe.id),
     })
+    // Make sure item gets consumed when assembling
+    if (!Object.keys(global.special_recipes.assembly).includes(recipe.tool)) {
+        global.special_recipes.assembly[recipe.tool] = []
+    }
+    global.special_recipes.assembly[recipe.tool].push(recipe.input)
 }
 
 global.queueRecipe.fluidAssembly = (recipe) => {
