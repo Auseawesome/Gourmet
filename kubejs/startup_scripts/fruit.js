@@ -46,6 +46,7 @@ Object.keys(FRUIT).forEach(fruit => {
     queueFluid.basic(`kubejs:${fruit}_juice`, "thin", color)
     queueItem.basic(`kubejs:${fruit}_juice_jug`)
     queueModel.texture(`kubejs:${fruit}_juice_jug`,`kubejs:item/fruit/juice/${fruit}_juice_jug`)
+    queueTag.addTagToItem("create:upright_on_belt", `kubejs:${fruit}_juice_jug`)
     queueRecipe.automatableJuicing({
         "id": `kubejs:${fruit}_juice`,
         "container": "minecraft:glass_bottle",
@@ -60,6 +61,7 @@ Object.keys(FRUIT).forEach(fruit => {
     queueFluid.basic(`kubejs:${fruit}_jelly`, "thick", color)
     queueItem.basic(`kubejs:${fruit}_jelly_jar`)
     queueModel.texture(`kubejs:${fruit}_jelly_jar`,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
+    queueTag.addTagToItem("create:upright_on_belt", `kubejs:${fruit}_jelly_jar`)
     // Add recipe for simmering jelly from juice, fruit and extra sugar
     queueRecipe.bottleFluid(`kubejs:${fruit}_jelly`,`kubejs:${fruit}_jelly_jar`)
 
