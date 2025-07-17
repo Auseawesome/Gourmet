@@ -143,9 +143,14 @@ global.queueRecipe.assembly = (recipe) => {
     })
     // Make sure item gets consumed when assembling
     if (!Object.keys(global.special_recipes.assembly).includes(recipe.tool)) {
-        global.special_recipes.assembly[recipe.tool] = []
+        global.special_recipes.assembly[recipe.tool] = {}
     }
-    global.special_recipes.assembly[recipe.tool].push(recipe.input)
+    let assembly_object = {}
+    if (Object.keys(recipe).includes("tool_result")) {
+        assembly_object.tool_result = recipe.tool_result
+    }
+    
+    global.special_recipes.assembly[recipe.tool][recipe.input] = assembly_object
 }
 
 global.queueRecipe.fluidAssembly = (recipe) => {
@@ -159,12 +164,16 @@ global.queueRecipe.fluidAssembly = (recipe) => {
         fillingRecipe.amount = recipe.amount
     }
     global.queueRecipe.filling(fillingRecipe)
-    global.queueRecipe.assembly({
+    let assemblyRecipe = {
         "input": recipe.input,
         "tool": recipe.container,
         "output": recipe.output,
         "id": recipe.id,
-    })
+    }
+    if (Object.keys(recipe).includes("empty_container")) {
+        assemblyRecipe.tool_result = recipe.empty_container
+    }
+    global.queueRecipe.assembly(assemblyRecipe)
 }
 
 global.queueRecipe.automatableJuicing = (recipe) => {

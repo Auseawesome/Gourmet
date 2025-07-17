@@ -370,6 +370,7 @@ function addRecipesForBurger(id, ingredients) {
                 "output": id,
                 "fluid": SAUCES[sauce].id,
                 "container": SAUCES[sauce].container,
+                "empty_container": "minecraft:glass_bottle",
             })
             // Reset ingredients
             ingredients.sauce = sauce
