@@ -1,5 +1,5 @@
 // Load Helpers
-let { langHelper, queueFluid, queueItem, queueLang, queueRecipe, queueTag } = global;
+let { langHelper, queueFluid, queueItem, queueLang, queueModel, queueRecipe, queueTag } = global;
 
 const FRUIT = {
     "apple": {
@@ -45,6 +45,7 @@ Object.keys(FRUIT).forEach(fruit => {
     // Register Juice
     queueFluid.basic(`kubejs:${fruit}_juice`, "thin", color)
     queueItem.basic(`kubejs:${fruit}_juice_jug`)
+    queueModel.texture(`kubejs:${fruit}_juice_jug`,`kubejs:item/fruit/juice/${fruit}_juice_jug`)
     queueRecipe.automatableJuicing({
         "id": `kubejs:${fruit}_juice`,
         "container": "minecraft:glass_bottle",
@@ -58,6 +59,7 @@ Object.keys(FRUIT).forEach(fruit => {
     // Register Jelly
     queueFluid.basic(`kubejs:${fruit}_jelly`, "thick", color)
     queueItem.basic(`kubejs:${fruit}_jelly_jar`)
+    queueModel.texture(`kubejs:${fruit}_jelly_jar`,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
     // Add recipe for simmering jelly from juice, fruit and extra sugar
     queueRecipe.bottleFluid(`kubejs:${fruit}_jelly`,`kubejs:${fruit}_jelly_jar`)
 
