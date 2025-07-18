@@ -300,6 +300,7 @@ global.queueRecipe.cooking = (recipe) => {
         recipe_object.cookingtime = recipe.cookingTime
     }
     global.queueRecipe.custom(recipe_object, recipeId)
+}
 
 global.queueRecipe.mixing = (recipe) => {
     let recipe_object = {
@@ -331,4 +332,45 @@ global.queueRecipe.mixing = (recipe) => {
     }
     global.queueRecipe.custom(recipe_object, recipeId)
 }
+
+global.queueRecipe.automatableCooking = (recipe) => {
+    let recipeKeys = Object.keys(recipe)
+
+    let cookingRecipe = {
+        "ingredients": [],
+        "output": recipe.output
+    }
+    let mixingRecipe = {
+        "heatRequirement": "heated"
+    }
+
+    if (recipeKeys.includes("id")) {
+        cookingRecipe.id = `${stringHelper.getNamespace(recipe.id)}:manual_cooking_${stringHelper.removeNamespace(recipe.id)}`
+        mixingRecipe.id = `${stringHelper.getNamespace(recipe.id)}:mixing_cooking_${stringHelper.removeNamespace(recipe.id)}`
+    } else {
+        cookingRecipe.id = `kubejs:manual_cooking_${stringHelper.removeNamespace(recipe.result)}`
+        mixingRecipe.id = `kubejs:mixing_cooking_${stringHelper.removeNamespace(recipe.result)}`
+    }
+    if (recipeKeys.includes("container")) {
+        cookingRecipe.container = recipe.container
+    }
+    if (recipeKeys.includes("ingredients")) {
+        cookingRecipe.ingredients = cookingRecipe.ingredients.concat(recipe.ingredients)
+        mixingRecipe.ingredients = recipe.ingredients
+    }
+    if (recipeKeys.includes("containerIngredients")) {
+        cookingRecipe.ingredients = cookingRecipe.ingredients.concat(recipe.containerIngredients)
+    }
+    if (recipeKeys.includes("fluidIngredients")) {
+        mixingRecipe.fluidIngredients = recipe.fluidIngredients
+    }
+    // Make mixing output fluid if possible
+    if (recipeKeys.includes("fluidOutput")) {
+        mixingRecipe.fluidOutputs = [recipe.fluidOutput]
+    } else {
+        mixingRecipe.outputs = [recipe.output]
+    }
+
+    global.queueRecipe.cooking(cookingRecipe)
+    global.queueRecipe.mixing(mixingRecipe)
 }
