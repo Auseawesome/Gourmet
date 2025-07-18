@@ -129,17 +129,26 @@ global.queueRecipe.custom = (recipe, id) => {
 global.special_recipes.assembly = {}
 
 global.queueRecipe.assembly = (recipe) => {
+    let deploying_id
+    let preparation_id
+    if (Object.keys(recipe).includes("id")) {
+        deploying_id = stringHelper.getNamespace(recipe.id) + ":deploying_" + stringHelper.removeNamespace(recipe.id)
+        preparation_id = stringHelper.getNamespace(recipe.id) + ":preparation_" + stringHelper.removeNamespace(recipe.id)
+    } else {
+        deploying_id = `kubejs:deploying_${stringHelper.removeNamespace(recipe.tool)}_on_${stringHelper.removeNamespace(recipe.input)}`
+        preparation_id = `kubejs:preparing_${stringHelper.removeNamespace(recipe.input)}_with_${stringHelper.removeNamespace(recipe.tool)}`
+    }
     global.queueRecipe.deploying({
         "input": recipe.input,
         "tool": recipe.tool,
         "output": recipe.output,
-        "id": stringHelper.getNamespace(recipe.id) + ":deploying_" + stringHelper.removeNamespace(recipe.id),
+        "id": deploying_id,
     })
     global.queueRecipe.preparation({
         "input": recipe.input,
         "tool": recipe.tool,
         "output": recipe.output,
-        "id": stringHelper.getNamespace(recipe.id) + ":preparation_" + stringHelper.removeNamespace(recipe.id),
+        "id": preparation_id,
     })
     // Make sure item gets consumed when assembling
     if (!Object.keys(global.special_recipes.assembly).includes(recipe.tool)) {
