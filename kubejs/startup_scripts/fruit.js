@@ -62,7 +62,17 @@ Object.keys(FRUIT).forEach(fruit => {
     queueItem.basic(`kubejs:${fruit}_jelly_jar`)
     queueModel.texture(`kubejs:${fruit}_jelly_jar`,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
     queueTag.addTagToItem("create:upright_on_belt", `kubejs:${fruit}_jelly_jar`)
-    // Add recipe for simmering jelly from juice, fruit and extra sugar
+    queueRecipe.cooking({
+        "id": `kubejs:cooking_${fruit}_jelly`,
+        "container": "minecraft:glass_bottle",
+        "output": `kubejs:${fruit}_jelly_jar`,
+        "outputFluid": `kubejs:${fruit}_jelly`,
+        "ingredients": [
+            FRUIT[fruit].id,
+            "minecraft:sugar",
+            "minecraft:sugar"
+        ]
+    })
     queueRecipe.bottleFluid(`kubejs:${fruit}_jelly`,`kubejs:${fruit}_jelly_jar`)
 
     queueLang.renameEnglish("fluid", {
