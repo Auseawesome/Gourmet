@@ -272,3 +272,32 @@ global.queueRecipe.bowlFluid = (fluid, full_container) => {
 global.queueRecipe.bucketFluid = (fluid, full_container) => {
     global.queueRecipe.fluidStorage(fluid, "minecraft:bucket", full_container, 1000)
 }
+
+global.queueRecipe.cooking = (recipe) => {
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:cooking_${stringHelper.removeNamespace(recipe.output)}`
+    }
+    let recipe_object = {
+        "type": "farmersdelight:cooking",
+        "ingredients": recipeHelper.itemOrTagArray(recipe.ingredients),
+        "result": {
+            "count": 1,
+            "id": recipe.output
+        },
+        "recipe_book_tab": "misc"
+    }
+    if (recipeKeys.includes("container")) {
+        recipe_object.container = {
+            "count": 1,
+            "id": recipe.container
+        }
+    }
+    if (recipeKeys.includes("cookingTime")) {
+        recipe_object.cookingtime = recipe.cookingTime
+    }
+    global.queueRecipe.custom(recipe_object, recipeId)
+}
