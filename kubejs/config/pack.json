@@ -1,4 +1,5 @@
 {
 	"recipeLogging": false,
+	"verboseCustomRecipes": false,
 	"tooltipLogging": false
 }

@@ -11,6 +11,9 @@ ServerEvents.recipes(event => {
         let recipe = global.recipes[id]
         if (recipeLogging) {
             console.log(`Adding '${recipe.type}' recipe: '${id}'`)
+            if (configHelper.getValue("verboseCustomRecipes")) {
+                console.log(JSON.stringify(recipe))
+            }
         }
         event.custom(recipe).id(id)
         if (recipeLogging) {

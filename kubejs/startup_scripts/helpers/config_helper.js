@@ -6,6 +6,7 @@ global.config = JsonIO.read("kubejs/config/pack.json")
 
 global.defaultConfig = {
     "recipeLogging": false,
+    "verboseCustomRecipes": false,
     "tooltipLogging": false,
 }
 
