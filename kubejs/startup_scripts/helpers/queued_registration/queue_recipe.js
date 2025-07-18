@@ -198,7 +198,7 @@ global.queueRecipe.automatableJuicing = (recipe) => {
 
 global.queueRecipe.fluidStorage = (fluid, container, full_container, amount) => {
     global.queueRecipe.filling({
-        "id": `filling_${stringHelper.removeNamespace(container)}_with_${stringHelper.removeNamespace(fluid)}`,
+        "id": `kubejs:filling_${stringHelper.removeNamespace(container)}_with_${stringHelper.removeNamespace(fluid)}`,
         "input": container,
         "amount": amount,
         "fluid": fluid,
@@ -220,7 +220,7 @@ global.queueRecipe.fluidStorage = (fluid, container, full_container, amount) => 
                 "id": fluid
             }
         ]
-    })
+    }, `kubejs:emptying_${stringHelper.removeNamespace(fluid)}_from_${stringHelper.removeNamespace(container)}`)
 }
 /**
  * Creates recipes for emptying and filling a bottle
