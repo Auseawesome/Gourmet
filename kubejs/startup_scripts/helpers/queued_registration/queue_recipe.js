@@ -300,4 +300,35 @@ global.queueRecipe.cooking = (recipe) => {
         recipe_object.cookingtime = recipe.cookingTime
     }
     global.queueRecipe.custom(recipe_object, recipeId)
+
+global.queueRecipe.mixing = (recipe) => {
+    let recipe_object = {
+        "type": "create:mixing",
+        "ingredients": [],
+        "results": []
+    }
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:mixing_${stringHelper.removeNamespace(recipe.output)}`
+    }
+    if (recipeKeys.includes("heatRequirement")) {
+        recipe_object.heat_requirement = recipe.heatRequirement
+    }
+    if (recipeKeys.includes("ingredients")) {
+        recipe_object.ingredients = recipe_object.ingredients.concat(recipeHelper.itemOrTagArray(recipe.ingredients))
+    }
+    if (recipeKeys.includes("fluidIngredients")) {
+        recipe_object.ingredients = recipe_object.ingredients.concat(recipeHelper.fluidIngredientArray(recipe.fluidIngredients))
+    }
+    if (recipeKeys.includes("outputs")) {
+        recipe_object.results = recipe_object.results.concat(recipeHelper.resultArray(recipe.outputs))
+    }
+    if (recipeKeys.includes("fluidOutputs")) {
+        recipe_object.results = recipe_object.results.concat(recipeHelper.fluidResultArray(recipe.fluidOutputs))
+    }
+    global.queueRecipe.custom(recipe_object, recipeId)
+}
 }
