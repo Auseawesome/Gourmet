@@ -177,12 +177,21 @@ global.queueRecipe.fluidAssembly = (recipe) => {
 }
 
 global.queueRecipe.automatableJuicing = (recipe) => {
+    let juicing_id
+    let compacting_id
+    if (Object.keys(recipe).includes("id")) {
+        juicing_id = stringHelper.getNamespace(recipe.id) + ":juicing_" + stringHelper.removeNamespace(recipe.id)
+        compacting_id = stringHelper.getNamespace(recipe.id) + ":compacting_" + stringHelper.removeNamespace(recipe.id)
+    } else {
+        juicing_id = `kubejs:juicing_${recipe.primary}_and_${recipe.secondary}_into_${recipe.container}`
+        compacting_id = `kubejs:compacting_${recipe.primary}_and_${recipe.secondary}_to_${recipe.outputFluid}`
+    }
     global.queueRecipe.juicing({
         "primary": recipe.primary,
         "secondary": recipe.secondary,
         "container": recipe.container,
         "output": recipe.output,
-        "id": stringHelper.getNamespace(recipe.id) + ":juicing_" + stringHelper.removeNamespace(recipe.id)
+        "id": juicing_id
     })
     global.queueRecipe.custom({
         "type": "create:compacting",
@@ -193,7 +202,7 @@ global.queueRecipe.automatableJuicing = (recipe) => {
                 "id": recipe.outputFluid
             }
         ]
-    })
+    }, compacting_id)
 }
 
 global.queueRecipe.fluidStorage = (fluid, container, full_container, amount) => {
