@@ -116,8 +116,8 @@ let recipe_count = {}
 
 global.queueRecipe.custom = (recipe, id) => {
     if (typeof id === 'undefined') {
-        if (typeof recipe_count[recipe.type] === 'undefined') {
-            recipe_count[recipe.type] == 0
+        if (!Object.keys(recipe_count).includes(recipe.type)) {
+            recipe_count[recipe.type] = 0
         }
         id = `kubejs:${recipe.type.split(":").join("_")}_${recipe_count[recipe.type]++}`
     }
