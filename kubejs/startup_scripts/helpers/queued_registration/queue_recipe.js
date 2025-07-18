@@ -183,8 +183,8 @@ global.queueRecipe.automatableJuicing = (recipe) => {
         juicing_id = stringHelper.getNamespace(recipe.id) + ":juicing_" + stringHelper.removeNamespace(recipe.id)
         compacting_id = stringHelper.getNamespace(recipe.id) + ":compacting_" + stringHelper.removeNamespace(recipe.id)
     } else {
-        juicing_id = `kubejs:juicing_${recipe.primary}_and_${recipe.secondary}_into_${recipe.container}`
-        compacting_id = `kubejs:compacting_${recipe.primary}_and_${recipe.secondary}_to_${recipe.outputFluid}`
+        juicing_id = `kubejs:juicing_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_into_${stringHelper.removeNamespace(recipe.container)}`
+        compacting_id = `kubejs:compacting_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_to_${stringHelper.removeNamespace(recipe.outputFluid)}`
     }
     global.queueRecipe.juicing({
         "primary": recipe.primary,
