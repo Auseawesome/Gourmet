@@ -163,11 +163,17 @@ global.queueRecipe.assembly = (recipe) => {
 }
 
 global.queueRecipe.fluidAssembly = (recipe) => {
+    let filling_id
+    if (Object.keys(recipe).includes("id")) {
+        filling_id = stringHelper.getNamespace(recipe.id) + ":filling_" + stringHelper.removeNamespace(recipe.id)
+    } else {
+        filling_id = `kubes:spouting_${stringHelper.removeNamespace(recipe.fluid)}_on_${stringHelper.removeNamespace(recipe.input)}`
+    }
     let fillingRecipe = {
         "input": recipe.input,
         "fluid": recipe.fluid,
         "output": recipe.output,
-        "id": stringHelper.getNamespace(recipe.id) + ":filling_" + stringHelper.removeNamespace(recipe.id)
+        "id": filling_id,
     }
     if (Object.keys(recipe).includes("amount")) {
         fillingRecipe.amount = recipe.amount
@@ -177,10 +183,12 @@ global.queueRecipe.fluidAssembly = (recipe) => {
         "input": recipe.input,
         "tool": recipe.container,
         "output": recipe.output,
-        "id": recipe.id,
     }
     if (Object.keys(recipe).includes("empty_container")) {
         assemblyRecipe.tool_result = recipe.empty_container
+    }
+    if (Object.keys(recipe).includes("id")) {
+        assemblyRecipe.id = recipe.id
     }
     global.queueRecipe.assembly(assemblyRecipe)
 }
