@@ -62,11 +62,11 @@ Object.keys(FRUIT).forEach(fruit => {
     queueItem.basic(`kubejs:${fruit}_jelly_jar`)
     queueModel.texture(`kubejs:${fruit}_jelly_jar`,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
     queueTag.addTagToItem("create:upright_on_belt", `kubejs:${fruit}_jelly_jar`)
-    queueRecipe.cooking({
-        "id": `kubejs:cooking_${fruit}_jelly`,
+    queueRecipe.automatableCooking({
+        "id": `kubejs:${fruit}_jelly`,
         "container": "minecraft:glass_bottle",
         "output": `kubejs:${fruit}_jelly_jar`,
-        "outputFluid": `kubejs:${fruit}_jelly`,
+        "fluidOutput": [`kubejs:${fruit}_jelly`, 250],
         "ingredients": [
             FRUIT[fruit].id,
             "minecraft:sugar",
