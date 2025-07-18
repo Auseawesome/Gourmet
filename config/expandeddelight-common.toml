@@ -1,4 +1,4 @@
 #Recipe book
 [recipe_book]
 	#Should the Juicer have a Recipe Book available on its interface?
-	enableRecipeBookJuicer = true
+	enableRecipeBookJuicer = false

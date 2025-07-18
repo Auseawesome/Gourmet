@@ -1,0 +1,16 @@
+filename = 'Not Enough Recipe Book-NEOFORGE-0.4.2+1.21.jar'
+name = 'Not Enough Recipe Book [NERB]'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge' ]
+x-prismlauncher-mc-versions = [ '1.21.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '2ef2d508527273acb68c6fd34692b172148760e514fc979f141e16d718bec3ecf94dfeefe1ded6783634d2ca574ec16df2eac7a99f27f8a860f490c8a8fe1d68'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/bQh7xzFq/versions/oJLEqcbX/Not Enough Recipe Book-NEOFORGE-0.4.2%2B1.21.jar'
+
+[update.modrinth]
+mod-id = 'bQh7xzFq'
+version = 'oJLEqcbX'
