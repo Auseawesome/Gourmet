@@ -170,54 +170,42 @@ global.queueRecipe.automatableJuicing = (recipe) => {
     }, compactingId)
 }
 
-global.queueRecipe.fluidStorage = (fluid, container, full_container, amount) => {
+global.queueRecipe.fluidStorage = (fluid, container, fullContainer, amount) => {
     global.queueRecipe.filling({
         "id": `kubejs:filling_${stringHelper.removeNamespace(container)}_with_${stringHelper.removeNamespace(fluid)}`,
         "ingredient": container,
         "fluid": [fluid, 250],
-        "result": full_container
+        "result": fullContainer
     })
-    global.queueRecipe.custom({
-        "type": "create:emptying",
-        "ingredients": [
-            {
-                "item": full_container
-            }
-        ],
-        "results": [
-            {
-                "id": container
-            },
-            {
-                "amount": amount,
-                "id": fluid
-            }
-        ]
-    }, `kubejs:emptying_${stringHelper.removeNamespace(fluid)}_from_${stringHelper.removeNamespace(container)}`)
+    global.queueRecipe.emptying({
+        "ingredient": fullContainer,
+        "fluid":  [fluid, 250],
+        "result": container,
+    })
 }
 /**
  * Creates recipes for emptying and filling a bottle
  * @param {Special.Fluid} fluid 
- * @param {Special.Item} full_container
+ * @param {Special.Item} fullContainer
  */
-global.queueRecipe.bottleFluid = (fluid, full_container) => {
-    global.queueRecipe.fluidStorage(fluid, "minecraft:glass_bottle", full_container, 250)
+global.queueRecipe.bottleFluid = (fluid, fullContainer) => {
+    global.queueRecipe.fluidStorage(fluid, "minecraft:glass_bottle", fullContainer, 250)
 }
 /**
  * Creates recipes for emptying and fitting a bowl
  * @param {Special.Fluid} fluid 
- * @param {Special.Item} full_container 
+ * @param {Special.Item} fullContainer 
  */
-global.queueRecipe.bowlFluid = (fluid, full_container) => {
-    global.queueRecipe.fluidStorage(fluid, "minecraft:bowl", full_container, 250)
+global.queueRecipe.bowlFluid = (fluid, fullContainer) => {
+    global.queueRecipe.fluidStorage(fluid, "minecraft:bowl", fullContainer, 250)
 }
 /**
  * Creates recipes for emptying and fitting a bowl
  * @param {Special.Fluid} fluid 
- * @param {Special.Item} full_container 
+ * @param {Special.Item} fullContainer 
  */
-global.queueRecipe.bucketFluid = (fluid, full_container) => {
-    global.queueRecipe.fluidStorage(fluid, "minecraft:bucket", full_container, 1000)
+global.queueRecipe.bucketFluid = (fluid, fullContainer) => {
+    global.queueRecipe.fluidStorage(fluid, "minecraft:bucket", fullContainer, 1000)
 }
 
 global.queueRecipe.cooking = (recipe) => {

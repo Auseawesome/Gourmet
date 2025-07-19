@@ -55,6 +55,27 @@ global.queueRecipe.deploying = (recipe) => {
     global.queueRecipe.custom(recipeObject, recipeId)
 }
 
+global.queueRecipe.emptying = (recipe) => {
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    let recipeObject = {
+        "type": "create:emptying",
+        "ingredients": [
+            recipeHelper.itemIngredient(recipe.ingredient)
+        ],
+        "results": [
+            recipeHelper.itemResult(recipe.result),
+            recipeHelper.fluidResult(recipe.fluid)
+        ]
+    }
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:emptying_${stringHelper.removeNamespace(recipe.fluid[0])}_from_${stringHelper.removeNamespace(recipe.ingredient)}`
+    }
+    global.queueRecipe.custom(recipeObject, recipeId)
+}
+
 global.queueRecipe.filling = (recipe) => {
     let recipeKeys = Object.keys(recipe)
     let recipeId
