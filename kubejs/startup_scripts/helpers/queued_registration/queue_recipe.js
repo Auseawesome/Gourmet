@@ -84,14 +84,35 @@ global.queueRecipe.pressing = (recipe) => {
     global.queueRecipe.custom(recipeObject, recipeId)
 }
 
-global.specialRecipes.compacting = []
-
-// Doesn't appear to properly support fluids
 global.queueRecipe.compacting = (recipe) => {
-    if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `compacting_${stringHelper.removeNamespace(recipe.result)}_from_${recipe.ingredients[0].toString.split(" ")[0]}`
+    let recipeObject = {
+        "type": "create:compacting",
+        "ingredients": [],
+        "results": []
     }
-    global.specialRecipes.compacting.push(recipe)
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:compacting_${stringHelper.removeNamespace(recipe.result)}`
+    }
+    if (recipeKeys.includes("heatRequirement")) {
+        recipeObject.heat_requirement = recipe.heatRequirement
+    }
+    if (recipeKeys.includes("ingredients")) {
+        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.itemOrTagArray(recipe.ingredients))
+    }
+    if (recipeKeys.includes("fluidIngredients")) {
+        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.fluidIngredientArray(recipe.fluidIngredients))
+    }
+    if (recipeKeys.includes("results")) {
+        recipeObject.results = recipeObject.results.concat(recipeHelper.resultArray(recipe.results))
+    }
+    if (recipeKeys.includes("fluidResults")) {
+        recipeObject.results = recipeObject.results.concat(recipeHelper.fluidResultArray(recipe.fluidResults))
+    }
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 /**
