@@ -1,3 +1,5 @@
+global.disabledItems = []
+
 /**
  * 
  * @param {String} id 
