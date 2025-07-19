@@ -25,21 +25,6 @@ global.queueRecipe.custom = (recipe, id) => {
 
 // Recipe Helpers
 
-global.specialRecipes.preparationConsume = {}
-
-global.queueRecipe.preparationConsume = (recipe) => {
-    if (!Object.keys(global.specialRecipes.preparationConsume).includes(recipe.tool)) {
-        global.specialRecipes.preparationConsume[recipe.tool] = {}
-    }
-
-    let recipeObject = {}
-    if (Object.keys(recipe).includes("toolResult")) {
-        recipeObject.toolResult = recipe.toolResult
-    }
-    
-    global.specialRecipes.preparationConsume[recipe.tool][recipe.ingredient] = recipeObject
-}
-
 global.queueRecipe.assembly = (recipe) => {
     let deployingId
     let preparationId

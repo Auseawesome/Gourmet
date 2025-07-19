@@ -1,5 +1,24 @@
 //priority: 100
 
+
+// Special recipes
+
+global.specialRecipes.preparationConsume = {}
+
+global.queueRecipe.preparationConsume = (recipe) => {
+    if (!Object.keys(global.specialRecipes.preparationConsume).includes(recipe.tool)) {
+        global.specialRecipes.preparationConsume[recipe.tool] = {}
+    }
+
+    let recipeObject = {}
+    if (Object.keys(recipe).includes("toolResult")) {
+        recipeObject.toolResult = recipe.toolResult
+    }
+    
+    global.specialRecipes.preparationConsume[recipe.tool][recipe.ingredient] = recipeObject
+}
+
+// JSON recipes
 global.queueRecipe.preparation = (recipe) => {
     if (!Object.keys(recipe).includes("id")) {
         recipe.id = `preparing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
