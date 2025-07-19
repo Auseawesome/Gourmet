@@ -33,7 +33,7 @@ global.recipeHelper.fluidIngredient = (ingredient) => {
         return {
             "type": "fluid_tag",
             "amount": ingredient[1],
-            "fluid_tag": ingredient[0]
+            "fluid_tag": ingredient[0].slice(1, ingredient[0].length)
         }
     } else {
         return {
