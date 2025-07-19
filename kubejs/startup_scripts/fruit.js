@@ -51,7 +51,7 @@ Object.keys(FRUIT).forEach(fruit => {
         "id": `kubejs:${fruit}_juice`,
         "container": "minecraft:glass_bottle",
         "result": `kubejs:${fruit}_juice_jug`,
-        "fluidResult": `kubejs:${fruit}_juice`,
+        "fluidResult": [`kubejs:${fruit}_juice`, 250],
         "primary": id,
         "secondary": "minecraft:sugar"
     })

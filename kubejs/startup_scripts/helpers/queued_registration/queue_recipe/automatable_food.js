@@ -11,22 +11,17 @@ global.queueRecipe.automatableJuicing = (recipe) => {
         compactingId = `kubejs:compacting_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_to_${stringHelper.removeNamespace(recipe.fluidResult)}`
     }
     global.queueRecipe.juicing({
+        "id": juicingId,
         "primary": recipe.primary,
         "secondary": recipe.secondary,
         "container": recipe.container,
-        "result": recipe.result,
-        "id": juicingId
+        "result": recipe.result
     })
-    global.queueRecipe.custom({
-        "type": "create:compacting",
-        "ingredients": recipeHelper.itemIngredientArray([recipe.primary, recipe.secondary]),
-        "results": [
-            {
-                "amount": 250,
-                "id": recipe.fluidResult
-            }
-        ]
-    }, compactingId)
+    global.queueRecipe.compacting({
+        "id": compactingId,
+        "ingredients": [recipe.primary, recipe.secondary],
+        "fluidResults": [recipe.fluidResult]
+    })
 }
 
 global.queueRecipe.automatableCooking = (recipe) => {
