@@ -17,6 +17,6 @@ ItemEvents.modifyTooltips(event => {
 
 ServerEvents.recipes(event => {
     global.disabledItems.forEach(items => {
-        event.remove({result: items})
+        event.remove({output: items})
     })
 })
