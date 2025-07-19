@@ -20,15 +20,6 @@ ServerEvents.recipes(event => {
             console.log(`Recipe Added`)
         }
     })
-    global.specialRecipes.deploying.forEach(recipe => {
-        if (recipeLogging) {
-            console.log(`Adding deploying recipe: ${recipe.id}`)
-        }
-        event.recipes.create.deploying(recipe.result, [recipe.ingredient, recipe.tool]).id(recipe.id)
-        if (recipeLogging) {
-            console.log(`Recipe Added`)
-        }
-    })
     global.specialRecipes.filling.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding filling recipe: ${recipe.id}`)

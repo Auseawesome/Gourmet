@@ -11,17 +11,28 @@ global.specialRecipes = {}
 
 // Add Recipe Types
 
-global.specialRecipes.deploying = []
-
-/**
- * Queue deploying recipe to be added
- * @param {{"ingredient": String, "tool": String, "result": String, "id"?: String}} recipe
- */
 global.queueRecipe.deploying = (recipe) => {
-    if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `deploying_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    let recipeObject = {
+        "type": "create:deploying",
+        "ingredients": [
+            recipeHelper.itemOrTag(recipe.ingredient),
+            recipeHelper.itemOrTag(recipe.tool)
+        ],
+        "results": [
+            recipeHelper.result(recipe.result)
+        ]
     }
-    global.specialRecipes.deploying.push(recipe)
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:deploying_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
+    }
+    if (recipeKeys.includes("keepHelpItem")) {
+        recipeObject.keep_help_item = recipe.keepHeldItem
+    }
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 global.specialRecipes.filling = []
