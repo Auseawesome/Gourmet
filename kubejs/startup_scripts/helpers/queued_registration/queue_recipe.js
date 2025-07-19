@@ -17,11 +17,11 @@ global.queueRecipe.deploying = (recipe) => {
     let recipeObject = {
         "type": "create:deploying",
         "ingredients": [
-            recipeHelper.itemOrTag(recipe.ingredient),
-            recipeHelper.itemOrTag(recipe.tool)
+            recipeHelper.itemIngredient(recipe.ingredient),
+            recipeHelper.itemIngredient(recipe.tool)
         ],
         "results": [
-            recipeHelper.result(recipe.result)
+            recipeHelper.itemResult(recipe.result)
         ]
     }
     if (recipeKeys.includes("id")) {
@@ -45,11 +45,11 @@ global.queueRecipe.filling = (recipe) => {
     let recipeObject = {
         "type": "create:filling",
         "ingredients": [
-            recipeHelper.itemOrTag(recipe.ingredient),
+            recipeHelper.itemIngredient(recipe.ingredient),
             recipeHelper.fluidIngredient(recipe.fluid)
         ],
         "results": [
-            recipeHelper.result(recipe.result)
+            recipeHelper.itemResult(recipe.result)
         ]
     }
     if (recipeKeys.includes("id")) {
@@ -70,10 +70,10 @@ global.queueRecipe.pressing = (recipe) => {
     let recipeObject = {
         "type": "create:pressing",
         "ingredients": [
-            recipeHelper.itemOrTag(recipe.ingredient)
+            recipeHelper.itemIngredient(recipe.ingredient)
         ],
         "results": [
-            recipeHelper.result(recipe.result)
+            recipeHelper.itemResult(recipe.result)
         ]
     }
     if (recipeKeys.includes("id")) {
@@ -101,13 +101,13 @@ global.queueRecipe.compacting = (recipe) => {
         recipeObject.heat_requirement = recipe.heatRequirement
     }
     if (recipeKeys.includes("ingredients")) {
-        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.itemOrTagArray(recipe.ingredients))
+        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.itemIngredientArray(recipe.ingredients))
     }
     if (recipeKeys.includes("fluidIngredients")) {
         recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.fluidIngredientArray(recipe.fluidIngredients))
     }
     if (recipeKeys.includes("results")) {
-        recipeObject.results = recipeObject.results.concat(recipeHelper.resultArray(recipe.results))
+        recipeObject.results = recipeObject.results.concat(recipeHelper.itemResultArray(recipe.results))
     }
     if (recipeKeys.includes("fluidResults")) {
         recipeObject.results = recipeObject.results.concat(recipeHelper.fluidResultArray(recipe.fluidResults))
@@ -138,7 +138,7 @@ global.queueRecipe.preparation = (recipe) => {
                 }
             }
         ],
-        "tool": recipeHelper.itemOrTag(recipe.tool),
+        "tool": recipeHelper.itemIngredient(recipe.tool),
     }
 }
 
@@ -154,8 +154,8 @@ global.queueRecipe.juicing = (recipe) => {
         },
         "experience": 0.0,
         "ingredients": [
-            recipeHelper.itemOrTag(recipe.primary),
-            recipeHelper.itemOrTag(recipe.secondary)
+            recipeHelper.itemIngredient(recipe.primary),
+            recipeHelper.itemIngredient(recipe.secondary)
         ],
         "result": {
             "count": 1,
@@ -264,7 +264,7 @@ global.queueRecipe.automatableJuicing = (recipe) => {
     })
     global.queueRecipe.custom({
         "type": "create:compacting",
-        "ingredients": recipeHelper.itemOrTagArray([recipe.primary, recipe.secondary]),
+        "ingredients": recipeHelper.itemIngredientArray([recipe.primary, recipe.secondary]),
         "results": [
             {
                 "amount": 250,
@@ -334,7 +334,7 @@ global.queueRecipe.cooking = (recipe) => {
     }
     let recipeObject = {
         "type": "farmersdelight:cooking",
-        "ingredients": recipeHelper.itemOrTagArray(recipe.ingredients),
+        "ingredients": recipeHelper.itemIngredientArray(recipe.ingredients),
         "result": {
             "count": 1,
             "id": recipe.result
@@ -370,13 +370,13 @@ global.queueRecipe.mixing = (recipe) => {
         recipeObject.heat_requirement = recipe.heatRequirement
     }
     if (recipeKeys.includes("ingredients")) {
-        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.itemOrTagArray(recipe.ingredients))
+        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.itemIngredientArray(recipe.ingredients))
     }
     if (recipeKeys.includes("fluidIngredients")) {
         recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.fluidIngredientArray(recipe.fluidIngredients))
     }
     if (recipeKeys.includes("results")) {
-        recipeObject.results = recipeObject.results.concat(recipeHelper.resultArray(recipe.results))
+        recipeObject.results = recipeObject.results.concat(recipeHelper.itemResultArray(recipe.results))
     }
     if (recipeKeys.includes("fluidResults")) {
         recipeObject.results = recipeObject.results.concat(recipeHelper.fluidResultArray(recipe.fluidResults))

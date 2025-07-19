@@ -2,7 +2,7 @@
 
 global.recipeHelper = {}
 
-global.recipeHelper.itemOrTag = (id) => {
+global.recipeHelper.itemIngredient = (id) => {
     if (id.startsWith("#")) {
         return {
             "tag": id.slice(1, id.length)
@@ -14,18 +14,18 @@ global.recipeHelper.itemOrTag = (id) => {
     }
 }
 
-global.recipeHelper.itemOrTagArray = (idArray) => {
-    return idArray.map(global.recipeHelper.itemOrTag)
+global.recipeHelper.itemIngredientArray = (idArray) => {
+    return idArray.map(global.recipeHelper.itemIngredient)
 }
 
-global.recipeHelper.result = (id) => {
+global.recipeHelper.itemResult = (id) => {
     return {
         "id": id
     }
 }
 
-global.recipeHelper.resultArray = (idArray) => {
-    return idArray.map(global.recipeHelper.result)
+global.recipeHelper.itemResultArray = (idArray) => {
+    return idArray.map(global.recipeHelper.itemResult)
 }
 
 global.recipeHelper.fluidIngredient = (ingredient) => {
