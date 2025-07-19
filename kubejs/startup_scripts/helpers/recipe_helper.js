@@ -2,30 +2,30 @@
 
 global.recipeHelper = {}
 
-global.recipeHelper.itemIngredient = (id) => {
-    if (id.startsWith("#")) {
+global.recipeHelper.itemIngredient = (ingredient) => {
+    if (ingredient.startsWith("#")) {
         return {
-            "tag": id.slice(1, id.length)
+            "tag": ingredient.slice(1, ingredient.length)
         }
     } else {
         return {
-            "item": id
+            "item": ingredient
         }
     }
 }
 
-global.recipeHelper.itemIngredientArray = (idArray) => {
-    return idArray.map(global.recipeHelper.itemIngredient)
+global.recipeHelper.itemIngredientArray = (ingredientArray) => {
+    return ingredientArray.map(global.recipeHelper.itemIngredient)
 }
 
-global.recipeHelper.itemResult = (id) => {
+global.recipeHelper.itemResult = (result) => {
     return {
-        "id": id
+        "id": result
     }
 }
 
-global.recipeHelper.itemResultArray = (idArray) => {
-    return idArray.map(global.recipeHelper.itemResult)
+global.recipeHelper.itemResultArray = (resultArray) => {
+    return resultArray.map(global.recipeHelper.itemResult)
 }
 
 global.recipeHelper.fluidIngredient = (ingredient) => {
