@@ -28,7 +28,7 @@ let queueTranslation = (dialect) => {
 }
 
 // Add english dialect translations
-global.english_dialects.forEach(dialect => {
+global.englishDialects.forEach(dialect => {
     queueTranslation(dialect)
 })
 

@@ -20,38 +20,38 @@ ServerEvents.recipes(event => {
             console.log(`Recipe Added`)
         }
     })
-    global.special_recipes.deploying.forEach(recipe => {
+    global.specialRecipes.deploying.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding deploying recipe: ${recipe.id}`)
         }
-        event.recipes.create.deploying(recipe.output, [recipe.input, recipe.tool]).id(recipe.id)
+        event.recipes.create.deploying(recipe.result, [recipe.ingredient, recipe.tool]).id(recipe.id)
         if (recipeLogging) {
             console.log(`Recipe Added`)
         }
     })
-    global.special_recipes.filling.forEach(recipe => {
+    global.specialRecipes.filling.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding filling recipe: ${recipe.id}`)
         }
-        event.recipes.create.filling(recipe.output, [recipe.input, Fluid.of(recipe.fluid, recipe.amount)]).id(recipe.id)
+        event.recipes.create.filling(recipe.result, [recipe.ingredient, Fluid.of(recipe.fluid, recipe.amount)]).id(recipe.id)
         if (recipeLogging) {
             console.log(`Recipe Added`)
         }
     })
-    global.special_recipes.pressing.forEach(recipe => {
+    global.specialRecipes.pressing.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding pressing recipe: ${recipe.id}`)
         }
-        event.recipes.create.pressing(recipe.output, recipe.input).id(recipe.id)
+        event.recipes.create.pressing(recipe.result, recipe.ingredient).id(recipe.id)
         if (recipeLogging) {
             console.log(`Recipe Added`)
         }
     })
-    global.special_recipes.compacting.forEach(recipe => {
+    global.specialRecipes.compacting.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding compacting recipe: ${recipe.id}`)
         }
-        event.recipes.create.compacting(recipe.output, recipe.inputs).id(recipe.id)
+        event.recipes.create.compacting(recipe.result, recipe.ingredients).id(recipe.id)
         if (recipeLogging) {
             console.log(`Recipe Added`)
         }

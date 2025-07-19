@@ -128,7 +128,7 @@ const INVERSE_PREFIX_DICT = {
 
 /**
  * Return 
- * @param {{"patty": String, "closed": Boolean, "sauce"?: String, "first_filling"?: String, "second_filling"?: String}} ingredients 
+ * @param {{"patty": String, "closed": Boolean, "sauce"?: String, "firstFilling"?: String, "secondFilling"?: String}} ingredients 
  * @returns {String}
  */
 function getIdFromIngredients(ingredients) {
@@ -137,21 +137,21 @@ function getIdFromIngredients(ingredients) {
     /** @type {String[]} */
     let keys = Object.keys(ingredients)
     /** @type {Number} */
-    let fillings = keys.includes("first_filling") + keys.includes("second_filling")
+    let fillings = keys.includes("firstFilling") + keys.includes("secondFilling")
     /** @type {Boolean} */
-    let has_sauce = keys.includes("sauce")
+    let hasSauce = keys.includes("sauce")
     // Add prefix to id
-    id += PREFIX_DICT[ingredients.closed + fillings * 2 + has_sauce * 6]
+    id += PREFIX_DICT[ingredients.closed + fillings * 2 + hasSauce * 6]
     // Add patty to id
     id += `_${ingredients.patty}`
-    if (has_sauce) {
+    if (hasSauce) {
         id += `_${ingredients.sauce}`
     }
     if (fillings > 0) {
-        id += `_${ingredients.first_filling}`
+        id += `_${ingredients.firstFilling}`
     }
     if (fillings > 1) {
-        id += `_${ingredients.second_filling}`
+        id += `_${ingredients.secondFilling}`
     }
     return id
 }
@@ -166,24 +166,24 @@ function getTooltipFromId(id) {
         console.log(`Adding tooltip for ${id}`)
     }
     /** @type {String[]} */
-    let id_parts = id.split("_").reverse()
+    let idParts = id.split("_").reverse()
     // Remove 'kubejs:burger'
-    id_parts.pop()
+    idParts.pop()
     /** @type {String} */
-    let prefix = id_parts.pop()
+    let prefix = idParts.pop()
     /** @type {Number} */
-    let prefix_id = INVERSE_PREFIX_DICT[prefix]
+    let prefixId = INVERSE_PREFIX_DICT[prefix]
     /** @type {Text[]} */
     let tooltip = []
     // Pop the patty from the id
-    id_parts.pop()
+    idParts.pop()
     // If burger has sauce add sauce to the tooltip
-    if (prefix_id > 5) {
-        tooltip.push(Text.gray("Sauce: ").append(Text.translatable(`kubejs.burger.sauce.${id_parts.pop()}`).gray()))
+    if (prefixId > 5) {
+        tooltip.push(Text.gray("Sauce: ").append(Text.translatable(`kubejs.burger.sauce.${idParts.pop()}`).gray()))
     }
     // Loop through remaining parts and add to new tooltip lines
-    for (; id_parts.length > 0;) {
-        tooltip.push(Text.translatable(`kubejs.burger.filling.${id_parts.pop()}`).gray())
+    for (; idParts.length > 0;) {
+        tooltip.push(Text.translatable(`kubejs.burger.filling.${idParts.pop()}`).gray())
     }
     return tooltip
 }
@@ -195,10 +195,10 @@ function getTooltipFromId(id) {
  */
 function getNameFromId(id) {
      /** @type {String[]} */
-    let id_parts = id.split("_").reverse()
+    let idParts = id.split("_").reverse()
     // Remove 'kubejs:burger'
-    id_parts.pop()
-    return Text.gray(`${stringHelper.capitalize(id_parts.pop())} ${PATTIES[id_parts.pop()].lang.en_us} Burger`)
+    idParts.pop()
+    return Text.gray(`${stringHelper.capitalize(idParts.pop())} ${PATTIES[idParts.pop()].lang.en_us} Burger`)
 }
 
 /**
@@ -208,17 +208,17 @@ function getNameFromId(id) {
  */
 function getModelFromId(id) {
     /** @type {String[]} */
-    let id_parts = id.split("_").reverse()
+    let idParts = id.split("_").reverse()
     // Remove 'kubejs:burger'
-    id_parts.pop()
+    idParts.pop()
     /** @type {String} */
-    let prefix = id_parts.pop()
+    let prefix = idParts.pop()
     /** @type {Number} */
-    let prefix_id = INVERSE_PREFIX_DICT[prefix]
+    let prefixId = INVERSE_PREFIX_DICT[prefix]
 
-    let filling_height = 0
+    let fillingHeight = 0
 
-    let patty = id_parts.pop()
+    let patty = idParts.pop()
 
     /** @type {import("com.google.gson.JsonElement").$JsonElement$$Type} */
     let model = {
@@ -261,45 +261,45 @@ function getModelFromId(id) {
         }
     }
 
-    filling_height += PATTIES[patty].height
+    fillingHeight += PATTIES[patty].height
 
     // If burger has sauce add sauce to the model
-    if (prefix_id > 5) {
-        let sauce = id_parts.pop()
+    if (prefixId > 5) {
+        let sauce = idParts.pop()
         model["children"]["part_1"]["textures"]["layer2"] = `kubejs:item/burger/sauce/${sauce}`
-        filling_height += SAUCES[sauce].height
+        fillingHeight += SAUCES[sauce].height
     }
 
-let part_num = 2
+let partNum = 2
 
     // Add filling layers to model
-    for (; id_parts.length > 0;) {
-        let filling = id_parts.pop()
-        model["children"][`part_${part_num}`] = {
+    for (; idParts.length > 0;) {
+        let filling = idParts.pop()
+        model["children"][`part_${partNum}`] = {
             "loader": "neoforge:item_layers",
             "textures": {
                 "layer0": `kubejs:item/burger/filling/${filling}`
             },
             "transform": {
                 "origin": "center",
-                "translation": [0, (filling_height-1)/16, 0],
-                "scale": [1+(0.01*filling_height), 1, 1+(0.01*filling_height)],
+                "translation": [0, (fillingHeight-1)/16, 0],
+                "scale": [1+(0.01*fillingHeight), 1, 1+(0.01*fillingHeight)],
             }
         }
-        filling_height += FILLINGS[filling].height
-        part_num++
+        fillingHeight += FILLINGS[filling].height
+        partNum++
     }
     // If burger is closed add bun top to model
-    if (prefix_id % 2 == 1) {
-        model["children"][`part_${part_num}`] = {
+    if (prefixId % 2 == 1) {
+        model["children"][`part_${partNum}`] = {
             "loader": "neoforge:item_layers",
             "textures": {
                 "layer0": `kubejs:item/burger/bun_top`
             },
             "transform": {
                 "origin": "center",
-                "translation": [0, (filling_height-1)/16, 0],
-                "scale": [1+(0.01*filling_height), 1, 1+(0.01*filling_height)],
+                "translation": [0, (fillingHeight-1)/16, 0],
+                "scale": [1+(0.01*fillingHeight), 1, 1+(0.01*fillingHeight)],
             }
         }
     }
@@ -309,76 +309,76 @@ let part_num = 2
 /**
  * 
  * @param {String} id 
- * @param {{"patty": String, "closed": Boolean, "sauce"?: String, "first_filling"?: String, "second_filling"?: String}} ingredients 
+ * @param {{"patty": String, "closed": Boolean, "sauce"?: String, "firstFilling"?: String, "secondFilling"?: String}} ingredients 
  */
 function addRecipesForBurger(id, ingredients) {
     /** @type Array */
-    let ingredient_keys = Object.keys(ingredients)
+    let ingredientKeys = Object.keys(ingredients)
     if (ingredients.closed == true) {
         ingredients.closed = false
-        let input_id = getIdFromIngredients(ingredients)
+        let ingredientId = getIdFromIngredients(ingredients)
         queueRecipe.assembly({
             "id": `${id}_closing`,
-            "input": input_id,
-            "output": id,
+            "ingredient": ingredientId,
+            "result": id,
             "tool": "kubejs:bun_top",
         })
         // Reset ingredients
         ingredients.closed = true
     } else {
-        if (ingredient_keys.includes("second_filling")) {
-            let first_filling = ingredients.first_filling
-            let second_filling = ingredients.second_filling
-            delete ingredients.second_filling
-            let input_id = getIdFromIngredients(ingredients)
+        if (ingredientKeys.includes("secondFilling")) {
+            let firstFilling = ingredients.firstFilling
+            let secondFilling = ingredients.secondFilling
+            delete ingredients.secondFilling
+            let ingredientId = getIdFromIngredients(ingredients)
             queueRecipe.assembly({
                 "id": `${id}_assembling_second`,
-                "input": input_id,
-                "output": id,
-                "tool": FILLINGS[second_filling].id,
+                "ingredient": ingredientId,
+                "result": id,
+                "tool": FILLINGS[secondFilling].id,
             })
-            ingredients.first_filling = second_filling
-            input_id = getIdFromIngredients(ingredients)
+            ingredients.firstFilling = secondFilling
+            ingredientId = getIdFromIngredients(ingredients)
             queueRecipe.assembly({
                 "id": `${id}_assembling_first`,
-                "input": input_id,
-                "output": id,
-                "tool": FILLINGS[first_filling].id,
+                "ingredient": ingredientId,
+                "result": id,
+                "tool": FILLINGS[firstFilling].id,
             })
             // Reset ingredients
-            ingredients.first_filling = first_filling
-            ingredients.second_filling = second_filling
-        } else if (ingredient_keys.includes("first_filling")) {
-            let filling = ingredients.first_filling
-            delete ingredients.first_filling
-            let input_id = getIdFromIngredients(ingredients)
+            ingredients.firstFilling = firstFilling
+            ingredients.secondFilling = secondFilling
+        } else if (ingredientKeys.includes("firstFilling")) {
+            let filling = ingredients.firstFilling
+            delete ingredients.firstFilling
+            let ingredientId = getIdFromIngredients(ingredients)
             queueRecipe.assembly({
                 "id": `${id}_assembling`,
-                "input": input_id,
-                "output": id,
+                "ingredient": ingredientId,
+                "result": id,
                 "tool": FILLINGS[filling].id
             })
             // Reset ingredients
-            ingredients.first_filling = filling
-        } else if (ingredient_keys.includes("sauce")) {
+            ingredients.firstFilling = filling
+        } else if (ingredientKeys.includes("sauce")) {
             let sauce = ingredients.sauce
             delete ingredients.sauce
-            let input_id = getIdFromIngredients(ingredients)
+            let ingredientId = getIdFromIngredients(ingredients)
             queueRecipe.fluidAssembly({
                 "id": `${id}_sauce`,
-                "input": input_id,
-                "output": id,
+                "ingredient": ingredientId,
+                "result": id,
                 "fluid": SAUCES[sauce].id,
                 "container": SAUCES[sauce].container,
-                "empty_container": "minecraft:glass_bottle",
+                "emptyContainer": "minecraft:glass_bottle",
             })
             // Reset ingredients
             ingredients.sauce = sauce
         } else {
             queueRecipe.assembly({
                 "id": `${id}_assembling`,
-                "input": "kubejs:bun_base",
-                "output": id,
+                "ingredient": "kubejs:bun_base",
+                "result": id,
                 "tool": PATTIES[ingredients.patty].id,
             })
         }
@@ -387,23 +387,23 @@ function addRecipesForBurger(id, ingredients) {
 
 /**
  * Adds a burger with given ingredients
- * @param {{"patty": String, "closed": Boolean, "sauce"?: String, "first_filling"?: String, "second_filling"?: String}} ingredients 
+ * @param {{"patty": String, "closed": Boolean, "sauce"?: String, "firstFilling"?: String, "secondFilling"?: String}} ingredients 
  */
 function addBurger(ingredients) {
-    let default_id = getIdFromIngredients(ingredients)
+    let defaultId = getIdFromIngredients(ingredients)
 
-    queueItem.customName(default_id, getNameFromId(default_id))
-    queueModel.basic(default_id, getModelFromId(default_id))
-    queueTooltip.basic(default_id, getTooltipFromId(default_id))
+    queueItem.customName(defaultId, getNameFromId(defaultId))
+    queueModel.basic(defaultId, getModelFromId(defaultId))
+    queueTooltip.basic(defaultId, getTooltipFromId(defaultId))
 
-    addRecipesForBurger(default_id, ingredients)
+    addRecipesForBurger(defaultId, ingredients)
 
-    queueTag.addTagToItem("create:upright_on_belt", default_id)
+    queueTag.addTagToItem("create:upright_on_belt", defaultId)
 }
 
 /**
  * Adds both a closed and open burger with given ingredients
- * @param {{"patty": String, "sauce"?: String, "first_filling"?: String, "second_filling"?: String}} ingredients 
+ * @param {{"patty": String, "sauce"?: String, "firstFilling"?: String, "secondFilling"?: String}} ingredients 
  */
 function addBurgers(ingredients) {
     ingredients.closed = false
@@ -432,21 +432,21 @@ Object.keys(PATTIES).forEach(patty => {
     let fillings = Array.from(Object.keys(FILLINGS))
     // Loop through all fillings, pop the last one then compute all combinations
     while (true) {
-        let first_filling = fillings.pop()
-        addBurgers({"patty": patty, "first_filling": first_filling})
+        let firstFilling = fillings.pop()
+        addBurgers({"patty": patty, "firstFilling": firstFilling})
         Object.keys(SAUCES).forEach(sauce => {
             // Register sauced patties with one filling
-            addBurgers({"patty": patty, "sauce": sauce, "first_filling": first_filling})
+            addBurgers({"patty": patty, "sauce": sauce, "firstFilling": firstFilling})
         })
         if (fillings.length == 0) {
             break
         }
-        fillings.forEach(second_filling => {
+        fillings.forEach(secondFilling => {
             // Register open burgers with two fillings
-            addBurgers({"patty": patty, "first_filling": first_filling, "second_filling": second_filling})
+            addBurgers({"patty": patty, "firstFilling": firstFilling, "secondFilling": secondFilling})
             Object.keys(SAUCES).forEach(sauce => {
                 // Register sauced patties with two fillings
-                addBurgers({"patty": patty, "sauce": sauce, "first_filling": first_filling, "second_filling": second_filling})
+                addBurgers({"patty": patty, "sauce": sauce, "firstFilling": firstFilling, "secondFilling": secondFilling})
             })
         })
     }

@@ -7,82 +7,82 @@ let { recipeHelper, stringHelper } = global
 
 global.queueRecipe = {}
 global.recipes = {}
-global.special_recipes = {}
+global.specialRecipes = {}
 
 // Add Recipe Types
 
-global.special_recipes.deploying = []
+global.specialRecipes.deploying = []
 
 /**
  * Queue deploying recipe to be added
- * @param {{"input": String, "tool": String, "output": String, "id"?: String}} recipe
+ * @param {{"ingredient": String, "tool": String, "result": String, "id"?: String}} recipe
  */
 global.queueRecipe.deploying = (recipe) => {
     if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `deploying_${stringHelper.removeNamespace(recipe.output)}_from_${stringHelper.removeNamespace(recipe.input)}_using_${stringHelper.removeNamespace(recipe.tool)}`
+        recipe.id = `deploying_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
     }
-    global.special_recipes.deploying.push(recipe)
+    global.specialRecipes.deploying.push(recipe)
 }
 
-global.special_recipes.filling = []
+global.specialRecipes.filling = []
 
 /**
  * Queue filling recipe to be added
- * @param {{"input": String, "fluid": String, "amount"?: Number, "output": String, "id"?: String}} recipe
+ * @param {{"ingredient": String, "fluid": String, "amount"?: Number, "result": String, "id"?: String}} recipe
  */
 global.queueRecipe.filling = (recipe) => {
     if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `filling_${stringHelper.removeNamespace(recipe.output)}_from_${stringHelper.removeNamespace(recipe.input)}_and_${stringHelper.removeNamespace(recipe.fluid)}`
+        recipe.id = `filling_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_and_${stringHelper.removeNamespace(recipe.fluid)}`
     }
     if (!Object.keys(recipe).includes("amount")) {
         recipe.amount = 250
     }
-    global.special_recipes.filling.push(recipe)
+    global.specialRecipes.filling.push(recipe)
 }
 
-global.special_recipes.pressing = []
+global.specialRecipes.pressing = []
 
 /**
  * Queue pressing recipe to be added
- * @param {{"input": String, "output": String, "id"?: String}} recipe
+ * @param {{"ingredient": String, "result": String, "id"?: String}} recipe
  */
 global.queueRecipe.pressing = (recipe) => {
     if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `pressing_${stringHelper.removeNamespace(recipe.output)}_from_${stringHelper.removeNamespace(recipe.input)}`
+        recipe.id = `pressing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}`
     }
-    global.special_recipes.pressing.push(recipe)
+    global.specialRecipes.pressing.push(recipe)
 }
 
-global.special_recipes.compacting = []
+global.specialRecipes.compacting = []
 
 // Doesn't appear to properly support fluids
 global.queueRecipe.compacting = (recipe) => {
     if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `compacting_${stringHelper.removeNamespace(recipe.output)}_from_${recipe.inputs[0].toString.split(" ")[0]}`
+        recipe.id = `compacting_${stringHelper.removeNamespace(recipe.result)}_from_${recipe.ingredients[0].toString.split(" ")[0]}`
     }
-    global.special_recipes.compacting.push(recipe)
+    global.specialRecipes.compacting.push(recipe)
 }
 
 /**
  * Queue preparation recipe to be added
- * @param {{"input": String, "tool": String, "output": String, "id"?: String}} recipe
+ * @param {{"ingredient": String, "tool": String, "result": String, "id"?: String}} recipe
  */
 global.queueRecipe.preparation = (recipe) => {
     if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `preparing_${stringHelper.removeNamespace(recipe.output)}_from_${stringHelper.removeNamespace(recipe.input)}_using_${stringHelper.removeNamespace(recipe.tool)}`
+        recipe.id = `preparing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
     }
     global.recipes[recipe.id] = {
         "type": "farmersdelight:cutting",
         "ingredients": [
             {
-                "item": recipe.input
+                "item": recipe.ingredient
             }
         ],
         "result": [
             {
                 "item": {
                     "count": 1,
-                    "id": recipe.output
+                    "id": recipe.result
                 }
             }
         ],
@@ -107,7 +107,7 @@ global.queueRecipe.juicing = (recipe) => {
         ],
         "result": {
             "count": 1,
-            "id": recipe.output
+            "id": recipe.result
         }
     }
 }
@@ -126,66 +126,66 @@ global.queueRecipe.custom = (recipe, id) => {
 
 // Recipe Helpers
 
-global.special_recipes.assembly = {}
+global.specialRecipes.assembly = {}
 
 global.queueRecipe.assembly = (recipe) => {
-    let deploying_id
-    let preparation_id
+    let deployingId
+    let preparationId
     if (Object.keys(recipe).includes("id")) {
-        deploying_id = stringHelper.getNamespace(recipe.id) + ":deploying_" + stringHelper.removeNamespace(recipe.id)
-        preparation_id = stringHelper.getNamespace(recipe.id) + ":preparation_" + stringHelper.removeNamespace(recipe.id)
+        deployingId = stringHelper.getNamespace(recipe.id) + ":deploying_" + stringHelper.removeNamespace(recipe.id)
+        preparationId = stringHelper.getNamespace(recipe.id) + ":preparation_" + stringHelper.removeNamespace(recipe.id)
     } else {
-        deploying_id = `kubejs:deploying_${stringHelper.removeNamespace(recipe.tool)}_on_${stringHelper.removeNamespace(recipe.input)}`
-        preparation_id = `kubejs:preparing_${stringHelper.removeNamespace(recipe.input)}_with_${stringHelper.removeNamespace(recipe.tool)}`
+        deployingId = `kubejs:deploying_${stringHelper.removeNamespace(recipe.tool)}_on_${stringHelper.removeNamespace(recipe.ingredient)}`
+        preparationId = `kubejs:preparing_${stringHelper.removeNamespace(recipe.ingredient)}_with_${stringHelper.removeNamespace(recipe.tool)}`
     }
     global.queueRecipe.deploying({
-        "input": recipe.input,
+        "ingredient": recipe.ingredient,
         "tool": recipe.tool,
-        "output": recipe.output,
-        "id": deploying_id,
+        "result": recipe.result,
+        "id": deployingId,
     })
     global.queueRecipe.preparation({
-        "input": recipe.input,
+        "ingredient": recipe.ingredient,
         "tool": recipe.tool,
-        "output": recipe.output,
-        "id": preparation_id,
+        "result": recipe.result,
+        "id": preparationId,
     })
     // Make sure item gets consumed when assembling
-    if (!Object.keys(global.special_recipes.assembly).includes(recipe.tool)) {
-        global.special_recipes.assembly[recipe.tool] = {}
+    if (!Object.keys(global.specialRecipes.assembly).includes(recipe.tool)) {
+        global.specialRecipes.assembly[recipe.tool] = {}
     }
     let assembly_object = {}
-    if (Object.keys(recipe).includes("tool_result")) {
-        assembly_object.tool_result = recipe.tool_result
+    if (Object.keys(recipe).includes("toolResult")) {
+        assembly_object.toolResult = recipe.toolResult
     }
     
-    global.special_recipes.assembly[recipe.tool][recipe.input] = assembly_object
+    global.specialRecipes.assembly[recipe.tool][recipe.ingredient] = assembly_object
 }
 
 global.queueRecipe.fluidAssembly = (recipe) => {
-    let filling_id
+    let fillingId
     if (Object.keys(recipe).includes("id")) {
-        filling_id = stringHelper.getNamespace(recipe.id) + ":filling_" + stringHelper.removeNamespace(recipe.id)
+        fillingId = stringHelper.getNamespace(recipe.id) + ":filling_" + stringHelper.removeNamespace(recipe.id)
     } else {
-        filling_id = `kubes:spouting_${stringHelper.removeNamespace(recipe.fluid)}_on_${stringHelper.removeNamespace(recipe.input)}`
+        fillingId = `kubes:spouting_${stringHelper.removeNamespace(recipe.fluid)}_on_${stringHelper.removeNamespace(recipe.ingredient)}`
     }
     let fillingRecipe = {
-        "input": recipe.input,
+        "ingredient": recipe.ingredient,
         "fluid": recipe.fluid,
-        "output": recipe.output,
-        "id": filling_id,
+        "result": recipe.result,
+        "id": fillingId,
     }
     if (Object.keys(recipe).includes("amount")) {
         fillingRecipe.amount = recipe.amount
     }
     global.queueRecipe.filling(fillingRecipe)
     let assemblyRecipe = {
-        "input": recipe.input,
+        "ingredient": recipe.ingredient,
         "tool": recipe.container,
-        "output": recipe.output,
+        "result": recipe.result,
     }
-    if (Object.keys(recipe).includes("empty_container")) {
-        assemblyRecipe.tool_result = recipe.empty_container
+    if (Object.keys(recipe).includes("emptyContainer")) {
+        assemblyRecipe.toolResult = recipe.emptyContainer
     }
     if (Object.keys(recipe).includes("id")) {
         assemblyRecipe.id = recipe.id
@@ -194,21 +194,21 @@ global.queueRecipe.fluidAssembly = (recipe) => {
 }
 
 global.queueRecipe.automatableJuicing = (recipe) => {
-    let juicing_id
-    let compacting_id
+    let juicingId
+    let compactingId
     if (Object.keys(recipe).includes("id")) {
-        juicing_id = stringHelper.getNamespace(recipe.id) + ":juicing_" + stringHelper.removeNamespace(recipe.id)
-        compacting_id = stringHelper.getNamespace(recipe.id) + ":compacting_" + stringHelper.removeNamespace(recipe.id)
+        juicingId = stringHelper.getNamespace(recipe.id) + ":juicing_" + stringHelper.removeNamespace(recipe.id)
+        compactingId = stringHelper.getNamespace(recipe.id) + ":compacting_" + stringHelper.removeNamespace(recipe.id)
     } else {
-        juicing_id = `kubejs:juicing_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_into_${stringHelper.removeNamespace(recipe.container)}`
-        compacting_id = `kubejs:compacting_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_to_${stringHelper.removeNamespace(recipe.outputFluid)}`
+        juicingId = `kubejs:juicing_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_into_${stringHelper.removeNamespace(recipe.container)}`
+        compactingId = `kubejs:compacting_${stringHelper.removeNamespace(recipe.primary)}_and_${stringHelper.removeNamespace(recipe.secondary)}_to_${stringHelper.removeNamespace(recipe.fluidResult)}`
     }
     global.queueRecipe.juicing({
         "primary": recipe.primary,
         "secondary": recipe.secondary,
         "container": recipe.container,
-        "output": recipe.output,
-        "id": juicing_id
+        "result": recipe.result,
+        "id": juicingId
     })
     global.queueRecipe.custom({
         "type": "create:compacting",
@@ -216,19 +216,19 @@ global.queueRecipe.automatableJuicing = (recipe) => {
         "results": [
             {
                 "amount": 250,
-                "id": recipe.outputFluid
+                "id": recipe.fluidResult
             }
         ]
-    }, compacting_id)
+    }, compactingId)
 }
 
 global.queueRecipe.fluidStorage = (fluid, container, full_container, amount) => {
     global.queueRecipe.filling({
         "id": `kubejs:filling_${stringHelper.removeNamespace(container)}_with_${stringHelper.removeNamespace(fluid)}`,
-        "input": container,
+        "ingredient": container,
         "amount": amount,
         "fluid": fluid,
-        "output": full_container
+        "result": full_container
     })
     global.queueRecipe.custom({
         "type": "create:emptying",
@@ -279,31 +279,31 @@ global.queueRecipe.cooking = (recipe) => {
     if (recipeKeys.includes("id")) {
         recipeId = recipe.id
     } else {
-        recipeId = `kubejs:cooking_${stringHelper.removeNamespace(recipe.output)}`
+        recipeId = `kubejs:cooking_${stringHelper.removeNamespace(recipe.result)}`
     }
-    let recipe_object = {
+    let recipeObject = {
         "type": "farmersdelight:cooking",
         "ingredients": recipeHelper.itemOrTagArray(recipe.ingredients),
         "result": {
             "count": 1,
-            "id": recipe.output
+            "id": recipe.result
         },
         "recipe_book_tab": "misc"
     }
     if (recipeKeys.includes("container")) {
-        recipe_object.container = {
+        recipeObject.container = {
             "count": 1,
             "id": recipe.container
         }
     }
     if (recipeKeys.includes("cookingTime")) {
-        recipe_object.cookingtime = recipe.cookingTime
+        recipeObject.cookingtime = recipe.cookingTime
     }
-    global.queueRecipe.custom(recipe_object, recipeId)
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 global.queueRecipe.mixing = (recipe) => {
-    let recipe_object = {
+    let recipeObject = {
         "type": "create:mixing",
         "ingredients": [],
         "results": []
@@ -313,24 +313,24 @@ global.queueRecipe.mixing = (recipe) => {
     if (recipeKeys.includes("id")) {
         recipeId = recipe.id
     } else {
-        recipeId = `kubejs:mixing_${stringHelper.removeNamespace(recipe.output)}`
+        recipeId = `kubejs:mixing_${stringHelper.removeNamespace(recipe.result)}`
     }
     if (recipeKeys.includes("heatRequirement")) {
-        recipe_object.heat_requirement = recipe.heatRequirement
+        recipeObject.heat_requirement = recipe.heatRequirement
     }
     if (recipeKeys.includes("ingredients")) {
-        recipe_object.ingredients = recipe_object.ingredients.concat(recipeHelper.itemOrTagArray(recipe.ingredients))
+        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.itemOrTagArray(recipe.ingredients))
     }
     if (recipeKeys.includes("fluidIngredients")) {
-        recipe_object.ingredients = recipe_object.ingredients.concat(recipeHelper.fluidIngredientArray(recipe.fluidIngredients))
+        recipeObject.ingredients = recipeObject.ingredients.concat(recipeHelper.fluidIngredientArray(recipe.fluidIngredients))
     }
-    if (recipeKeys.includes("outputs")) {
-        recipe_object.results = recipe_object.results.concat(recipeHelper.resultArray(recipe.outputs))
+    if (recipeKeys.includes("results")) {
+        recipeObject.results = recipeObject.results.concat(recipeHelper.resultArray(recipe.results))
     }
-    if (recipeKeys.includes("fluidOutputs")) {
-        recipe_object.results = recipe_object.results.concat(recipeHelper.fluidResultArray(recipe.fluidOutputs))
+    if (recipeKeys.includes("fluidResults")) {
+        recipeObject.results = recipeObject.results.concat(recipeHelper.fluidResultArray(recipe.fluidResults))
     }
-    global.queueRecipe.custom(recipe_object, recipeId)
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 global.queueRecipe.automatableCooking = (recipe) => {
@@ -338,7 +338,7 @@ global.queueRecipe.automatableCooking = (recipe) => {
 
     let cookingRecipe = {
         "ingredients": [],
-        "output": recipe.output
+        "result": recipe.result
     }
     let mixingRecipe = {
         "heatRequirement": "heated"
@@ -364,11 +364,11 @@ global.queueRecipe.automatableCooking = (recipe) => {
     if (recipeKeys.includes("fluidIngredients")) {
         mixingRecipe.fluidIngredients = recipe.fluidIngredients
     }
-    // Make mixing output fluid if possible
-    if (recipeKeys.includes("fluidOutput")) {
-        mixingRecipe.fluidOutputs = [recipe.fluidOutput]
+    // Make mixing result fluid if possible
+    if (recipeKeys.includes("fluidResult")) {
+        mixingRecipe.fluidResults = [recipe.fluidResult]
     } else {
-        mixingRecipe.outputs = [recipe.output]
+        mixingRecipe.results = [recipe.result]
     }
 
     global.queueRecipe.cooking(cookingRecipe)

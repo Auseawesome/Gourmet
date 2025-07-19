@@ -50,8 +50,8 @@ Object.keys(FRUIT).forEach(fruit => {
     queueRecipe.automatableJuicing({
         "id": `kubejs:${fruit}_juice`,
         "container": "minecraft:glass_bottle",
-        "output": `kubejs:${fruit}_juice_jug`,
-        "outputFluid": `kubejs:${fruit}_juice`,
+        "result": `kubejs:${fruit}_juice_jug`,
+        "fluidResult": `kubejs:${fruit}_juice`,
         "primary": id,
         "secondary": "minecraft:sugar"
     })
@@ -65,8 +65,8 @@ Object.keys(FRUIT).forEach(fruit => {
     queueRecipe.automatableCooking({
         "id": `kubejs:${fruit}_jelly`,
         "container": "minecraft:glass_bottle",
-        "output": `kubejs:${fruit}_jelly_jar`,
-        "fluidOutput": [`kubejs:${fruit}_jelly`, 250],
+        "result": `kubejs:${fruit}_jelly_jar`,
+        "fluidResult": [`kubejs:${fruit}_jelly`, 250],
         "ingredients": [
             FRUIT[fruit].id,
             "minecraft:sugar",
