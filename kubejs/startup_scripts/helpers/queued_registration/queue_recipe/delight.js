@@ -19,27 +19,33 @@ global.queueRecipe.preparationConsume = (recipe) => {
 }
 
 // JSON recipes
-global.queueRecipe.preparation = (recipe) => {
-    if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `preparing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
+global.queueRecipe.cooking = (recipe) => {
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:cooking_${stringHelper.removeNamespace(recipe.result)}`
     }
-    global.recipes[recipe.id] = {
-        "type": "farmersdelight:cutting",
-        "ingredients": [
-            {
-                "item": recipe.ingredient
-            }
-        ],
-        "result": [
-            {
-                "item": {
-                    "count": 1,
-                    "id": recipe.result
-                }
-            }
-        ],
-        "tool": recipeHelper.itemIngredient(recipe.tool),
+    let recipeObject = {
+        "type": "farmersdelight:cooking",
+        "ingredients": recipeHelper.itemIngredientArray(recipe.ingredients),
+        "result": {
+            "count": 1,
+            "id": recipe.result
+        },
+        "recipe_book_tab": "misc"
     }
+    if (recipeKeys.includes("container")) {
+        recipeObject.container = {
+            "count": 1,
+            "id": recipe.container
+        }
+    }
+    if (recipeKeys.includes("cookingTime")) {
+        recipeObject.cookingtime = recipe.cookingTime
+    }
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 global.queueRecipe.juicing = (recipe) => {
@@ -61,5 +67,28 @@ global.queueRecipe.juicing = (recipe) => {
             "count": 1,
             "id": recipe.result
         }
+    }
+}
+
+global.queueRecipe.preparation = (recipe) => {
+    if (!Object.keys(recipe).includes("id")) {
+        recipe.id = `preparing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.tool)}`
+    }
+    global.recipes[recipe.id] = {
+        "type": "farmersdelight:cutting",
+        "ingredients": [
+            {
+                "item": recipe.ingredient
+            }
+        ],
+        "result": [
+            {
+                "item": {
+                    "count": 1,
+                    "id": recipe.result
+                }
+            }
+        ],
+        "tool": recipeHelper.itemIngredient(recipe.tool),
     }
 }
