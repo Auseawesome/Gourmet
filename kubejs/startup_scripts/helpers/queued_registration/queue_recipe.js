@@ -35,20 +35,29 @@ global.queueRecipe.deploying = (recipe) => {
     global.queueRecipe.custom(recipeObject, recipeId)
 }
 
-global.specialRecipes.filling = []
-
 /**
  * Queue filling recipe to be added
  * @param {{"ingredient": String, "fluid": String, "amount"?: Number, "result": String, "id"?: String}} recipe
  */
 global.queueRecipe.filling = (recipe) => {
-    if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `filling_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_and_${stringHelper.removeNamespace(recipe.fluid)}`
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    let recipeObject = {
+        "type": "create:filling",
+        "ingredients": [
+            recipeHelper.itemOrTag(recipe.ingredient),
+            recipeHelper.fluidIngredient(recipe.fluid)
+        ],
+        "results": [
+            recipeHelper.result(recipe.result)
+        ]
     }
-    if (!Object.keys(recipe).includes("amount")) {
-        recipe.amount = 250
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:filling_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}_using_${stringHelper.removeNamespace(recipe.fluid[0])}`
     }
-    global.specialRecipes.filling.push(recipe)
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 global.specialRecipes.pressing = []
@@ -237,8 +246,7 @@ global.queueRecipe.fluidStorage = (fluid, container, full_container, amount) => 
     global.queueRecipe.filling({
         "id": `kubejs:filling_${stringHelper.removeNamespace(container)}_with_${stringHelper.removeNamespace(fluid)}`,
         "ingredient": container,
-        "amount": amount,
-        "fluid": fluid,
+        "fluid": [fluid, 250],
         "result": full_container
     })
     global.queueRecipe.custom({

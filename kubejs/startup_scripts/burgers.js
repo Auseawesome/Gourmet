@@ -368,7 +368,7 @@ function addRecipesForBurger(id, ingredients) {
                 "id": `${id}_sauce`,
                 "ingredient": ingredientId,
                 "result": id,
-                "fluid": SAUCES[sauce].id,
+                "fluid": [SAUCES[sauce].id, 250],
                 "container": SAUCES[sauce].container,
                 "emptyContainer": "minecraft:glass_bottle",
             })

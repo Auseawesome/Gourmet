@@ -20,15 +20,6 @@ ServerEvents.recipes(event => {
             console.log(`Recipe Added`)
         }
     })
-    global.specialRecipes.filling.forEach(recipe => {
-        if (recipeLogging) {
-            console.log(`Adding filling recipe: ${recipe.id}`)
-        }
-        event.recipes.create.filling(recipe.result, [recipe.ingredient, Fluid.of(recipe.fluid, recipe.amount)]).id(recipe.id)
-        if (recipeLogging) {
-            console.log(`Recipe Added`)
-        }
-    })
     global.specialRecipes.pressing.forEach(recipe => {
         if (recipeLogging) {
             console.log(`Adding pressing recipe: ${recipe.id}`)
