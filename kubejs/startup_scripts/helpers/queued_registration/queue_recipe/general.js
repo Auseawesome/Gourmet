@@ -1,4 +1,4 @@
-// priority: 100
+// priority: 200
 
 // Load Helpers
 let { recipeHelper, stringHelper } = global

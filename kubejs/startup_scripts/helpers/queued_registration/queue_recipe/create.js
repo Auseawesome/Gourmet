@@ -1,3 +1,5 @@
+//priority: 100
+
 global.queueRecipe.compacting = (recipe) => {
     let recipeObject = {
         "type": "create:compacting",
