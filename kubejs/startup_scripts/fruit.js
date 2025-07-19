@@ -43,45 +43,52 @@ Object.keys(FRUIT).forEach(fruit => {
     let { id, color, lang } = FRUIT[fruit]
 
     // Register Juice
-    queueFluid.basic(`kubejs:${fruit}_juice`, "thin", color)
-    queueItem.basic(`kubejs:${fruit}_juice_jug`)
-    queueModel.texture(`kubejs:${fruit}_juice_jug`,`kubejs:item/fruit/juice/${fruit}_juice_jug`)
-    queueTag.addTagToItem("create:upright_on_belt", `kubejs:${fruit}_juice_jug`)
+    let juiceId = FRUIT[fruit].juiceId = `kubejs:${fruit}_juice`
+    let juiceItemId = FRUIT[fruit].juiceItemId = `kubejs:${fruit}_juice_jug`
+
+    queueFluid.basic(juiceId, "thin", color)
+    queueItem.basic(juiceItemId)
+    queueModel.texture(juiceItemId,`kubejs:item/fruit/juice/${fruit}_juice_jug`)
+    queueTag.addTagToItem("create:upright_on_belt", juiceItemId)
     queueRecipe.automatableJuicing({
-        "id": `kubejs:${fruit}_juice`,
+        "id": juiceId,
         "container": "minecraft:glass_bottle",
-        "result": `kubejs:${fruit}_juice_jug`,
-        "fluidResult": [`kubejs:${fruit}_juice`, 250],
+        "result": juiceItemId,
+        "fluidResult": [juiceId, 250],
         "primary": id,
         "secondary": "minecraft:sugar"
     })
-    queueRecipe.bottleFluid(`kubejs:${fruit}_juice`,`kubejs:${fruit}_juice_jug`)
+    queueRecipe.bottleFluid(juiceId, juiceItemId)
 
     // Register Jelly
-    queueFluid.basic(`kubejs:${fruit}_jelly`, "thick", color)
-    queueItem.basic(`kubejs:${fruit}_jelly_jar`)
-    queueModel.texture(`kubejs:${fruit}_jelly_jar`,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
-    queueTag.addTagToItem("create:upright_on_belt", `kubejs:${fruit}_jelly_jar`)
+    let jellyId = FRUIT[fruit].jellyId = `kubejs:${fruit}_jelly`
+    let jellyItemId = FRUIT[fruit].jellyItemId = `kubejs:${fruit}_jelly_jar`
+
+    queueFluid.basic(jellyId, "thick", color)
+    queueItem.basic(jellyItemId)
+    queueModel.texture(jellyItemId,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
+    queueTag.addTagToItem("create:upright_on_belt", jellyItemId)
     queueRecipe.automatableCooking({
-        "id": `kubejs:${fruit}_jelly`,
+        "id": jellyId,
         "container": "minecraft:glass_bottle",
-        "result": `kubejs:${fruit}_jelly_jar`,
-        "fluidResult": [`kubejs:${fruit}_jelly`, 250],
+        "result": jellyItemId,
+        "fluidResult": [jellyId, 250],
         "ingredients": [
-            FRUIT[fruit].id,
+            id,
             "minecraft:sugar",
             "minecraft:sugar"
         ]
     })
-    queueRecipe.bottleFluid(`kubejs:${fruit}_jelly`,`kubejs:${fruit}_jelly_jar`)
+    queueRecipe.bottleFluid(jellyId, jellyItemId)
 
+    // Add Jelly/Jam Translations
     queueLang.renameEnglish("fluid", {
         "en_us": `${langHelper.dialectOrUS(lang, "en_us")} Jelly`,
         "en_au": `${langHelper.dialectOrUS(lang, "en_au")} Jam`,
         "en_ca": `${langHelper.dialectOrUS(lang, "en_ca")} Jelly`,
         "en_gb": `${langHelper.dialectOrUS(lang, "en_gb")} Jam`,
         "en_nz": `${langHelper.dialectOrUS(lang, "en_nz")} Jam`,
-    },`kubejs:${fruit}_jelly`)
+    }, jellyId)
 
     queueLang.renameEnglish("item", {
         "en_us": `${langHelper.dialectOrUS(lang, "en_us")} Jelly Jar`,
@@ -89,5 +96,5 @@ Object.keys(FRUIT).forEach(fruit => {
         "en_ca": `${langHelper.dialectOrUS(lang, "en_ca")} Jelly Jar`,
         "en_gb": `${langHelper.dialectOrUS(lang, "en_gb")} Jam Jar`,
         "en_nz": `${langHelper.dialectOrUS(lang, "en_nz")} Jam Jar`,
-    },`kubejs:${fruit}_jelly_jar`)
+    }, jellyItemId)
 })
