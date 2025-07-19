@@ -60,17 +60,28 @@ global.queueRecipe.filling = (recipe) => {
     global.queueRecipe.custom(recipeObject, recipeId)
 }
 
-global.specialRecipes.pressing = []
-
 /**
  * Queue pressing recipe to be added
  * @param {{"ingredient": String, "result": String, "id"?: String}} recipe
  */
 global.queueRecipe.pressing = (recipe) => {
-    if (!Object.keys(recipe).includes("id")) {
-        recipe.id = `pressing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}`
+    let recipeKeys = Object.keys(recipe)
+    let recipeId
+    let recipeObject = {
+        "type": "create:pressing",
+        "ingredients": [
+            recipeHelper.itemOrTag(recipe.ingredient)
+        ],
+        "results": [
+            recipeHelper.result(recipe.result)
+        ]
     }
-    global.specialRecipes.pressing.push(recipe)
+    if (recipeKeys.includes("id")) {
+        recipeId = recipe.id
+    } else {
+        recipeId = `kubejs:pressing_${stringHelper.removeNamespace(recipe.result)}_from_${stringHelper.removeNamespace(recipe.ingredient)}`
+    }
+    global.queueRecipe.custom(recipeObject, recipeId)
 }
 
 global.specialRecipes.compacting = []
