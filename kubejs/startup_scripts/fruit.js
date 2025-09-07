@@ -66,7 +66,14 @@ Object.keys(FRUIT).forEach(fruit => {
 
     queueFluid.basic(jellyId, "thick", color)
     queueItem.basic(jellyItemId)
-    queueModel.texture(jellyItemId,`kubejs:item/fruit/jelly/${fruit}_jelly_jar`)
+    queueModel.basic(jellyItemId,{
+        "parent": "minecraft:item/generated",
+        "textures": {
+            "layer0": `kubejs:item/fruit/jelly/${fruit}_fill`,
+            "layer1": "kubejs:item/jar",
+            "layer2": `kubejs:item/fruit/jelly/${fruit}_overlay`
+        }
+    })
     queueTag.addTagToItem("create:upright_on_belt", jellyItemId)
     queueRecipe.automatableCooking({
         "id": jellyId,
